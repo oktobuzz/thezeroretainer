@@ -1,11 +1,23 @@
 require('dotenv').config();
 const express = require('express');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 const cors = require('cors');
 const path = require('path');
+const fs = require('fs');
 const mysql = require('mysql2/promise');
 
 const app = express();
+
+// ─── Resend client ────────────────────────────────────────────────────────────
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+// ─── Logo as base64 (read once at startup) ───────────────────────────────────
+let logoBase64 = '';
+try {
+  logoBase64 = fs.readFileSync(path.join(__dirname, 'tzr-logo-cropped.png')).toString('base64');
+} catch (e) {
+  console.warn('Logo file not found — email will show broken image');
+}
 
 // ─── MySQL connection pool ────────────────────────────────────────────────────
 const pool = mysql.createPool({
@@ -42,21 +54,17 @@ async function initDB() {
   }
 }
 initDB();
+
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname)); // serves the HTML file
-
-// ─── Gmail SMTP transporter ───────────────────────────────────────────────────
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.GMAIL_USER,   // e.g. hemal@oktobuzz.com
-    pass: process.env.GMAIL_PASS,   // Gmail App Password (16 chars, no spaces)
-  },
-});
+app.use(express.static(__dirname));
 
 // ─── Thank-you email template ─────────────────────────────────────────────────
 function buildThankYouEmail(name) {
+  const logoSrc = logoBase64
+    ? `data:image/png;base64,${logoBase64}`
+    : 'https://oktobuzz.com/tzr-logo-cropped.png';
+
   return {
     subject: `Application Received — The Zero Retainer`,
     html: `
@@ -76,7 +84,7 @@ function buildThankYouEmail(name) {
           <!-- Logo header -->
           <tr>
             <td style="background:#ffffff;border-radius:12px 12px 0 0;padding:28px 36px;border-bottom:1px solid #E8E8E0;">
-              <img src="cid:tzr-logo" alt="The Zero Retainer" style="height:44px;width:auto;display:block;" />
+              <img src="${logoSrc}" alt="The Zero Retainer" style="height:44px;width:auto;display:block;" />
             </td>
           </tr>
 
@@ -198,13 +206,6 @@ function buildThankYouEmail(name) {
   </table>
 </body>
 </html>`,
-    attachments: [
-      {
-        filename: 'tzr-logo.png',
-        path: path.join(__dirname, 'tzr-logo-cropped.png'),
-        cid: 'tzr-logo',
-      },
-    ],
   };
 }
 
@@ -215,59 +216,64 @@ app.get('/ping', (req, res) => res.json({ ok: true, message: 'Server is running'
 app.post('/submit', async (req, res) => {
   const data = req.body;
   const applicantEmail = data.email;
-  const applicantName  = (data.name || 'there').split(' ')[0]; // first name
+  const applicantName  = (data.name || 'there').split(' ')[0];
 
   if (!applicantEmail) {
     return res.status(400).json({ ok: false, error: 'No email address provided.' });
   }
 
-  const { subject, html, attachments } = buildThankYouEmail(applicantName);
+  const { subject, html } = buildThankYouEmail(applicantName);
+
+  // Build admin email HTML
+  function buildAdminEmail() {
+    const score      = data._score      || '—';
+    const scoreLabel = data._scoreLabel || '—';
+    const breakdown  = (data._scoreBreakdown || '').split('\n').filter(Boolean);
+    const pct  = parseFloat(score) * 10;
+    const scol = pct < 40 ? '#E53935' : pct < 70 ? '#F59E0B' : '#22C55E';
+    const scoreHtml = `
+      <tr><td colspan="2" style="padding:16px 12px 6px;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee">Score</td></tr>
+      <tr>
+        <td style="padding:10px 12px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap">Overall Score</td>
+        <td style="padding:10px 12px;border-bottom:1px solid #eee;font-size:20px;font-weight:800;color:${scol}">${score} / 10 &nbsp;<span style="font-size:13px;font-weight:700;background:${scol}20;color:${scol};padding:2px 8px;border-radius:4px;border:1px solid ${scol}50">${scoreLabel}</span></td>
+      </tr>
+      ${breakdown.map(line => `<tr><td style="padding:5px 12px 5px 24px;font-size:12px;color:#777;border-bottom:1px solid #f5f5f5" colspan="2">${line}</td></tr>`).join('')}
+      <tr><td colspan="2" style="padding:16px 12px 6px;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee">Form Answers</td></tr>
+    `;
+    const skipKeys = new Set(['_score','_scoreLabel','_scoreBreakdown']);
+    const rows = Object.entries(data)
+      .filter(([k]) => !skipKeys.has(k))
+      .map(([k, v]) => `<tr><td style="padding:6px 12px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap">${k}</td><td style="padding:6px 12px;border-bottom:1px solid #eee">${Array.isArray(v) ? v.join(', ') : v}</td></tr>`)
+      .join('');
+    return {
+      subject: `New application: ${data.name || 'Unknown'} — Score: ${score}/10 (${scoreLabel})`,
+      html: `<table style="font-family:sans-serif;font-size:14px;border-collapse:collapse;width:100%;max-width:640px">${scoreHtml}${rows}</table>`,
+    };
+  }
 
   try {
-    await transporter.sendMail({
-      from: `"The Zero Retainer" <${process.env.GMAIL_USER}>`,
-      to: applicantEmail,
-      subject,
-      html,
-      attachments,
-    });
+    const sends = [
+      resend.emails.send({
+        from: 'The Zero Retainer <onboarding@resend.dev>',
+        to: [applicantEmail],
+        subject,
+        html,
+      })
+    ];
 
-    // Forward full submission + score to admin
     if (process.env.NOTIFY_EMAIL) {
-      const score      = data._score      || '—';
-      const scoreLabel = data._scoreLabel || '—';
-      const breakdown  = (data._scoreBreakdown || '').split('\n').filter(Boolean);
-
-      // Score colour
-      const pct = parseFloat(score) * 10;
-      const scol = pct < 40 ? '#E53935' : pct < 70 ? '#F59E0B' : '#22C55E';
-
-      // Score summary block
-      const scoreHtml = `
-        <tr><td colspan="2" style="padding:16px 12px 6px;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee">Score</td></tr>
-        <tr>
-          <td style="padding:10px 12px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap">Overall Score</td>
-          <td style="padding:10px 12px;border-bottom:1px solid #eee;font-size:20px;font-weight:800;color:${scol}">${score} / 10 &nbsp;<span style="font-size:13px;font-weight:700;background:${scol}20;color:${scol};padding:2px 8px;border-radius:4px;border:1px solid ${scol}50">${scoreLabel}</span></td>
-        </tr>
-        ${breakdown.map(line => `<tr><td style="padding:5px 12px 5px 24px;font-size:12px;color:#777;border-bottom:1px solid #f5f5f5" colspan="2">${line}</td></tr>`).join('')}
-        <tr><td colspan="2" style="padding:16px 12px 6px;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee">Form Answers</td></tr>
-      `;
-
-      // All other fields (exclude internal score keys)
-      const skipKeys = new Set(['_score','_scoreLabel','_scoreBreakdown']);
-      const rows = Object.entries(data)
-        .filter(([k]) => !skipKeys.has(k))
-        .map(([k, v]) => `<tr><td style="padding:6px 12px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap">${k}</td><td style="padding:6px 12px;border-bottom:1px solid #eee">${Array.isArray(v) ? v.join(', ') : v}</td></tr>`)
-        .join('');
-
-      await transporter.sendMail({
-        from: `"Zero Retainer Form" <${process.env.GMAIL_USER}>`,
-        to: process.env.NOTIFY_EMAIL,
-        subject: `New application: ${data.name || 'Unknown'} — Score: ${score}/10 (${scoreLabel})`,
-        html: `<table style="font-family:sans-serif;font-size:14px;border-collapse:collapse;width:100%;max-width:640px">${scoreHtml}${rows}</table>`,
-      });
+      const admin = buildAdminEmail();
+      sends.push(
+        resend.emails.send({
+          from: 'Zero Retainer Form <onboarding@resend.dev>',
+          to: [process.env.NOTIFY_EMAIL],
+          subject: admin.subject,
+          html: admin.html,
+        })
+      );
     }
 
+    await Promise.all(sends);
     res.json({ ok: true });
   } catch (err) {
     console.error('Email error:', err);
@@ -276,7 +282,6 @@ app.post('/submit', async (req, res) => {
 });
 
 // ─── POST /save-to-db — called by the frontend after scoring ─────────────────
-// Accepts { formData, score, scoreLabel } and inserts into applications table.
 app.post('/save-to-db', async (req, res) => {
   const { formData = {}, score, scoreLabel } = req.body || {};
   try {
@@ -295,7 +300,6 @@ app.post('/save-to-db', async (req, res) => {
     res.json({ ok: true });
   } catch (err) {
     console.error('DB save error:', err.message);
-    // Non-fatal — don't block the user
     res.status(500).json({ ok: false, error: err.message });
   }
 });

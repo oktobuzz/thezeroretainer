@@ -4,6 +4,14 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Zero Retainer — OktoBuzz · 2026</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-1DDYH3LHBE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-1DDYH3LHBE');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1599,7 +1607,6 @@ function validatePart1() {
     { id: 'url_blinkit',  pattern: /blinkit\.com/i,        label: 'Blinkit URL (blinkit.com)' },
     { id: 'url_zepto',    pattern: /zeptonow\.com/i,       label: 'Zepto URL (zeptonow.com)' },
     { id: 'url_instamart',pattern: /swiggy\.com/i,         label: 'Instamart URL (swiggy.com)' },
-    { id: 'q2_website',   pattern: /^https?:\/\/.{3,}/i,   label: 'valid website URL starting with http(s)://' },
     { id: 'url_other',    pattern: /^https?:\/\/.{3,}/i,   label: 'valid URL starting with http(s)://' },
   ];
   urlRules.forEach(function(rule) {
@@ -1865,7 +1872,6 @@ document.addEventListener('change', function(e) {
     { id: 'url_blinkit',   pattern: /blinkit\.com/i,      label: 'Blinkit URL (blinkit.com)' },
     { id: 'url_zepto',     pattern: /zeptonow\.com/i,     label: 'Zepto URL (zeptonow.com)' },
     { id: 'url_instamart', pattern: /swiggy\.com/i,       label: 'Instamart URL (swiggy.com)' },
-    { id: 'q2_website',    pattern: /^https?:\/\/.{3,}/i, label: 'valid website URL starting with http(s)://' },
     { id: 'url_other',     pattern: /^https?:\/\/.{3,}/i, label: 'valid URL starting with http(s)://' },
   ];
   urlRulesLive.forEach(function(rule) {

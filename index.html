@@ -987,11 +987,15 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
     <div class="url-stack">
       <div class="url-row">
         <span class="url-platform">Amazon</span>
-        <input type="text" id="url_amazon" name="url_amazon" placeholder="https://amazon.in/stores/..." />
+        <div class="url-input-wrap">
+          <input type="text" id="url_amazon" name="url_amazon" placeholder="https://amazon.in/stores/..." />
+        </div>
       </div>
       <div class="url-row">
         <span class="url-platform">Flipkart</span>
-        <input type="text" id="url_flipkart" name="url_flipkart" placeholder="https://flipkart.com/..." />
+        <div class="url-input-wrap">
+          <input type="text" id="url_flipkart" name="url_flipkart" placeholder="https://flipkart.com/..." />
+        </div>
       </div>
       <div class="url-row url-row-qc">
         <span class="url-platform">Blinkit</span>
@@ -1016,7 +1020,9 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
       </div>
       <div class="url-row">
         <span class="url-platform">Other</span>
-        <input type="text" id="url_other" name="url_other" placeholder="Any other platform URL" />
+        <div class="url-input-wrap">
+          <input type="text" id="url_other" name="url_other" placeholder="Any other platform URL" />
+        </div>
       </div>
     </div>
     <div class="field-error" id="err-q2">Please enter your brand name and at least one platform URL (Amazon, Flipkart, or Quick Commerce).</div>
@@ -1563,13 +1569,19 @@ function showFieldErr(inputId, msg) {
   if (!existing) {
     var span = document.createElement('span');
     span.id = 'inline-err-' + inputId;
-    span.style.cssText = 'display:block;font-size:12px;color:#CC1F26;margin-top:4px;font-family:var(--sans);white-space:nowrap;';
+    span.style.cssText = 'display:block;font-size:11px;font-weight:500;color:#DE232C;font-family:var(--sans);letter-spacing:0.02em;opacity:0.8;padding-left:2px;margin-top:3px;';
     input.parentNode.insertBefore(span, input.nextSibling);
     existing = span;
   }
   existing.textContent = msg;
-  input.style.borderColor = '#CC1F26';
-  input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  input.style.borderColor = '#DE232C';
+}
+
+function clearFieldErr(inputId) {
+  var existing = document.getElementById('inline-err-' + inputId);
+  if (existing) existing.textContent = '';
+  var input = document.getElementById(inputId);
+  if (input) input.style.borderColor = '';
 }
 
 // Clear inline errors on next attempt
@@ -1766,6 +1778,54 @@ document.addEventListener('change', function(e) {
     if (err) err.classList.remove('show');
   }
 });
+
+/* ======================================================
+   REAL-TIME BLUR VALIDATION
+====================================================== */
+(function() {
+  // Mobile
+  document.getElementById('q1_mobile').addEventListener('blur', function() {
+    var val = this.value.trim().replace(/\s+/g, '');
+    if (val && !/^\+?[0-9]{10,13}$/.test(val)) {
+      showFieldErr('q1_mobile', 'Please enter a valid 10-digit mobile number.');
+    } else {
+      clearFieldErr('q1_mobile');
+    }
+  });
+
+  // Email
+  document.getElementById('q1_email').addEventListener('blur', function() {
+    var val = this.value.trim();
+    if (val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+      showFieldErr('q1_email', 'Please enter a valid email address.');
+    } else {
+      clearFieldErr('q1_email');
+    }
+  });
+
+  // URL fields
+  var urlRulesLive = [
+    { id: 'url_amazon',    pattern: /amazon\.(in|com)/i,  label: 'Amazon URL (amazon.in or amazon.com)' },
+    { id: 'url_flipkart',  pattern: /flipkart\.com/i,     label: 'Flipkart URL (flipkart.com)' },
+    { id: 'url_blinkit',   pattern: /blinkit\.com/i,      label: 'Blinkit URL (blinkit.com)' },
+    { id: 'url_zepto',     pattern: /zeptonow\.com/i,     label: 'Zepto URL (zeptonow.com)' },
+    { id: 'url_instamart', pattern: /swiggy\.com/i,       label: 'Instamart URL (swiggy.com)' },
+    { id: 'q2_website',    pattern: /^https?:\/\/.{3,}/i, label: 'valid website URL starting with http(s)://' },
+    { id: 'url_other',     pattern: /^https?:\/\/.{3,}/i, label: 'valid URL starting with http(s)://' },
+  ];
+  urlRulesLive.forEach(function(rule) {
+    var el = document.getElementById(rule.id);
+    if (!el) return;
+    el.addEventListener('blur', function() {
+      var val = this.value.trim();
+      if (val && !rule.pattern.test(val)) {
+        showFieldErr(rule.id, 'Please enter a ' + rule.label + '.');
+      } else {
+        clearFieldErr(rule.id);
+      }
+    });
+  });
+})();
 
 updateUI();
 

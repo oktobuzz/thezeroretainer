@@ -3,7 +3,6 @@ const express = require('express');
 const { Resend } = require('resend');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs');
 const mysql = require('mysql2/promise');
 
 const app = express();
@@ -11,13 +10,8 @@ const app = express();
 // ─── Resend client ────────────────────────────────────────────────────────────
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-// ─── Logo as base64 (read once at startup) ───────────────────────────────────
-let logoBase64 = '';
-try {
-  logoBase64 = fs.readFileSync(path.join(__dirname, 'tzr-logo-cropped.png')).toString('base64');
-} catch (e) {
-  console.warn('Logo file not found — email will show broken image');
-}
+// ─── Logo public URL ─────────────────────────────────────────────────────────
+const LOGO_URL = 'https://oktobuzz.com/tzr-logo-cropped.png';
 
 // ─── MySQL connection pool ────────────────────────────────────────────────────
 const pool = mysql.createPool({
@@ -61,9 +55,7 @@ app.use(express.static(__dirname));
 
 // ─── Thank-you email template ─────────────────────────────────────────────────
 function buildThankYouEmail(name) {
-  const logoSrc = logoBase64
-    ? `data:image/png;base64,${logoBase64}`
-    : 'https://oktobuzz.com/tzr-logo-cropped.png';
+  const logoSrc = LOGO_URL;
 
   return {
     subject: `Application Received — The Zero Retainer`,

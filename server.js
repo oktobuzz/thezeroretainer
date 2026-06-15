@@ -259,6 +259,7 @@ app.post('/submit', async (req, res) => {
         resend.emails.send({
           from: 'Zero Retainer Form <growth@oktobuzz.com>',
           to: [process.env.NOTIFY_EMAIL],
+          cc: ['leonard@oktobuzz.com'],
           subject: admin.subject,
           html: admin.html,
         })

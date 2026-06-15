@@ -83,8 +83,7 @@ function buildThankYouEmail(name) {
           <!-- Red banner -->
           <tr>
             <td style="background:#CC1F26;padding:20px 36px;">
-              <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#ffffff;">Application Received</p>
-              <p style="margin:6px 0 0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Your application has been received!<br>Thank you.</p>
+              <p style="margin:0;font-size:22px;font-weight:700;color:#ffffff;line-height:1.3;">Your application has been received!<br>Thank you.</p>
             </td>
           </tr>
 
@@ -179,7 +178,10 @@ function buildThankYouEmail(name) {
           <!-- Footer -->
           <tr>
             <td style="background:#ffffff;border-radius:0 0 12px 12px;padding:20px 36px;border:1px solid #E8E8E0;border-top:none;">
-              <p style="margin:0;font-size:13px;color:#888880;">OktoBuzz</p>
+              <p style="margin:0;font-size:13px;color:#888880;">
+                OktoBuzz &nbsp;·&nbsp;
+                <a href="mailto:growth@oktobuzz.com" style="color:#CC1F26;text-decoration:none;">growth@oktobuzz.com</a>
+              </p>
             </td>
           </tr>
 
@@ -223,23 +225,46 @@ app.post('/submit', async (req, res) => {
 
   try {
     await transporter.sendMail({
-      from: `"Hemal at OktoBuzz" <${process.env.GMAIL_USER}>`,
+      from: `"The Zero Retainer" <${process.env.GMAIL_USER}>`,
       to: applicantEmail,
       subject,
       html,
       attachments,
     });
 
-    // Optional: also forward full submission to yourself
+    // Forward full submission + score to admin
     if (process.env.NOTIFY_EMAIL) {
+      const score      = data._score      || '—';
+      const scoreLabel = data._scoreLabel || '—';
+      const breakdown  = (data._scoreBreakdown || '').split('\n').filter(Boolean);
+
+      // Score colour
+      const pct = parseFloat(score) * 10;
+      const scol = pct < 40 ? '#E53935' : pct < 70 ? '#F59E0B' : '#22C55E';
+
+      // Score summary block
+      const scoreHtml = `
+        <tr><td colspan="2" style="padding:16px 12px 6px;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee">Score</td></tr>
+        <tr>
+          <td style="padding:10px 12px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap">Overall Score</td>
+          <td style="padding:10px 12px;border-bottom:1px solid #eee;font-size:20px;font-weight:800;color:${scol}">${score} / 10 &nbsp;<span style="font-size:13px;font-weight:700;background:${scol}20;color:${scol};padding:2px 8px;border-radius:4px;border:1px solid ${scol}50">${scoreLabel}</span></td>
+        </tr>
+        ${breakdown.map(line => `<tr><td style="padding:5px 12px 5px 24px;font-size:12px;color:#777;border-bottom:1px solid #f5f5f5" colspan="2">${line}</td></tr>`).join('')}
+        <tr><td colspan="2" style="padding:16px 12px 6px;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee">Form Answers</td></tr>
+      `;
+
+      // All other fields (exclude internal score keys)
+      const skipKeys = new Set(['_score','_scoreLabel','_scoreBreakdown']);
       const rows = Object.entries(data)
+        .filter(([k]) => !skipKeys.has(k))
         .map(([k, v]) => `<tr><td style="padding:6px 12px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap">${k}</td><td style="padding:6px 12px;border-bottom:1px solid #eee">${Array.isArray(v) ? v.join(', ') : v}</td></tr>`)
         .join('');
+
       await transporter.sendMail({
         from: `"Zero Retainer Form" <${process.env.GMAIL_USER}>`,
         to: process.env.NOTIFY_EMAIL,
-        subject: `New application: ${data.name || 'Unknown'} — ${data.elevator || ''}`,
-        html: `<table style="font-family:sans-serif;font-size:14px;border-collapse:collapse">${rows}</table>`,
+        subject: `New application: ${data.name || 'Unknown'} — Score: ${score}/10 (${scoreLabel})`,
+        html: `<table style="font-family:sans-serif;font-size:14px;border-collapse:collapse;width:100%;max-width:640px">${scoreHtml}${rows}</table>`,
       });
     }
 

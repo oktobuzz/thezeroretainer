@@ -204,7 +204,7 @@ strong { font-weight: 600; color: var(--ink); }
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.06em;
   color: var(--red);
   margin-bottom: 8px;
 }
@@ -283,7 +283,7 @@ strong { font-weight: 600; color: var(--ink); }
   font-size: 20px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.06em;
   color: var(--muted);
   margin-bottom: 12px;
 }
@@ -331,7 +331,7 @@ strong { font-weight: 600; color: var(--ink); }
   border-top: 1.5px solid var(--hairline);
 }
 .model-math-total .math-row-label { font-weight: 600; color: var(--ink); }
-.model-math-total .math-row-value { color: var(--ink); font-size: 20px; }
+.model-math-total .math-row-value { color: var(--ink); font-size: 13px; }
 .disclaimer-box {
   background: #FFF8F0;
   border: 1px solid rgba(222,35,44,0.14);
@@ -1255,8 +1255,10 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
 <!-- ====================================================
      PAGE: THANKS
 ==================================================== -->
-<section class="page" id="page-thanks" style="display:flex;align-items:center;justify-content:center;min-height:100vh;">
-  <h2 style="font-size:28px;font-weight:500;color:var(--ink);margin:0;text-align:center;">Thank you for your entry.</h2>
+<section class="page" id="page-thanks">
+  <div style="display:flex;align-items:center;justify-content:center;min-height:60vh;">
+    <h2 style="font-size:28px;font-weight:500;color:var(--ink);margin:0;text-align:center;">Thank you for your entry.</h2>
+  </div>
 </section>
 
 </main>
@@ -1615,6 +1617,17 @@ async function submitForm() {
   var serverUrl = (window.location.protocol === 'file:')
     ? 'http://localhost:3000/submit'
     : '/submit';
+
+  // Calculate score and attach to submission payload
+  try {
+    var _sr = calculateScore();
+    var _pct = Math.round(_sr.score10 * 10);
+    data._score      = _sr.score10;
+    data._scoreLabel = _pct < 40 ? 'Poor' : _pct < 70 ? 'Average' : 'Strong';
+    data._scoreBreakdown = _sr.items.map(function(i) {
+      return i.label + ': ' + i.value + ' → ' + i.cat + ' (' + i.pts + '/2)';
+    }).join('\n');
+  } catch(e) {}
 
   try {
     var res = await fetch(serverUrl, {

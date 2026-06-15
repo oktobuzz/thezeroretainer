@@ -1535,7 +1535,20 @@ function validatePart1() {
     var el = document.getElementById(id);
     return el && el.value.trim();
   });
-  if (!brandName || !anyPlatformUrl) { showErr('q2'); ok = false; }
+  if (!brandName || !anyPlatformUrl) {
+    var errEl = document.getElementById('err-q2');
+    if (errEl) {
+      if (!brandName && !anyPlatformUrl) {
+        errEl.textContent = 'Please enter your brand name and at least one platform URL (Amazon, Flipkart, or Quick Commerce).';
+      } else if (!brandName) {
+        errEl.textContent = 'Please enter your brand name.';
+      } else {
+        errEl.textContent = 'Please add at least one platform URL (Amazon, Flipkart, or Quick Commerce).';
+      }
+    }
+    showErr('q2');
+    ok = false;
+  }
 
   // ── URL format + platform validation ──
   var urlRules = [

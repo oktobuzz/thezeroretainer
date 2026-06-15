@@ -843,7 +843,7 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
 ==================================================== -->
 <section class="page active" id="page-intro">
   <div style="text-align:center;margin-bottom:28px;">
-    <img src="tzr-logo-cropped.png" alt="The Zero Retainer" style="height:200px;width:auto;display:inline-block;" />
+    <img src="tzr-logo-cropped.png" alt="The Zero Retainer" style="height:185px;width:auto;display:inline-block;" />
   </div>
 
   <p class="intro-subtitle" style="font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(20px,2.8vw,26px);color:var(--ink);opacity:1;">Raising the stakes, together.</p>
@@ -1272,52 +1272,47 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
 ====================================================== */
 var PLATFORM_COLS = {
   amazon: [
-    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
     { key: 'fulfilment',  header: 'Fulfilment',             type: 'select', opts: ['Platform Fulfilled', 'Self'] },
     { key: 'acct_health', header: 'Account Health',         type: 'select', opts: ['Healthy Account, Buy Box 80%+', 'Active, some flags/warnings', 'Suspended/No Account'] },
     { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'select', opts: ['Strong catalog, A+ content live', 'Decent titles, missing A+ / images', 'Poor listings, thin catalog'] },
     { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
-    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['3 months data available, improvable', 'Running ads, poor ACoS (60%+)', 'No Ad history / blind'] }
   ],
   flipkart: [
-    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
     { key: 'fulfilment',  header: 'Fulfilment',             type: 'select', opts: ['Platform Fulfilled', 'Self'] },
     { key: 'acct_health', header: 'Account Health',         type: 'select', opts: ['Active, average metrics', 'FAB seller, low cancellation/return rate', 'Penalties / poor seller metrics'] },
     { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'select', opts: ['Brand Hub enrolled, rich content live', 'Decent, missing rich media', 'Basic listings only'] },
     { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
-    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['Active FKA campaigns, data accessible', 'Some spend, no tracking / data', 'Zero Flipkart ad history'] }
   ],
   blinkit: [
-    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
     { key: 'fulfilment',  header: 'Fulfilment',             type: 'text' },
     { key: 'acct_health', header: 'Account Health',         type: 'text' },
     { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'text' },
     { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
-    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['3 months data available, improvable', 'Running ads, poor ACoS (60%+)', 'No Ad history / blind'] }
   ],
   zepto: [
-    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
     { key: 'fulfilment',  header: 'Fulfilment',             type: 'text' },
     { key: 'acct_health', header: 'Account Health',         type: 'text' },
     { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'text' },
     { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
-    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['3 months data available, improvable', 'Running ads, poor ACoS (60%+)', 'No Ad history / blind'] }
   ],
   instamart: [
-    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
     { key: 'fulfilment',  header: 'Fulfilment',             type: 'text' },
     { key: 'acct_health', header: 'Account Health',         type: 'text' },
     { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'text' },
     { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
-    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
     { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['3 months data available, improvable', 'Running ads, poor ACoS (60%+)', 'No Ad history / blind'] }
   ]
@@ -1806,7 +1801,7 @@ function getCategory(fieldName, value) {
   if (SCORE_MAP[fieldName] && SCORE_MAP[fieldName][value] !== undefined)
     return SCORE_MAP[fieldName][value];
   // Shared suffix maps
-  var SUFFIX_MAPS = ['_presence','_fulfilment','_ratings','_skus_listed','_skus_ads'];
+  var SUFFIX_MAPS = ['_fulfilment','_ratings','_skus_listed','_skus_ads'];
   for (var s = 0; s < SUFFIX_MAPS.length; s++) {
     if (fieldName.endsWith(SUFFIX_MAPS[s]) && SCORE_MAP[SUFFIX_MAPS[s]] && SCORE_MAP[SUFFIX_MAPS[s]][value] !== undefined)
       return SCORE_MAP[SUFFIX_MAPS[s]][value];

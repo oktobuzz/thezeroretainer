@@ -201,14 +201,15 @@ strong { font-weight: 600; color: var(--ink); }
   margin-bottom: 20px;
 }
 .model-eyebrow {
-  display: inline-block;
+  display: block;
   font-family: var(--display);
-  font-size: 20px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--red);
+  font-weight: 500;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--ink);
   margin-bottom: 8px;
+  font-variation-settings: "opsz" 80;
 }
 .model-subtext {
   font-size: 14px;
@@ -283,12 +284,13 @@ strong { font-weight: 600; color: var(--ink); }
 }
 .model-math-label {
   font-family: var(--display);
-  font-size: 20px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  font-weight: 500;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
   color: var(--ink);
   margin-bottom: 12px;
+  font-variation-settings: "opsz" 80;
 }
 .model-math-example {
   font-size: 14px;
@@ -846,7 +848,7 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
     <img src="tzr-logo-cropped.png" alt="The Zero Retainer" style="height:185px;width:auto;display:inline-block;" />
   </div>
 
-  <p class="intro-subtitle" style="font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(20px,2.8vw,26px);color:var(--ink);opacity:1;">Raising the stakes, together.</p>
+  <p class="intro-subtitle" style="font-family:var(--display);font-style:normal;font-weight:500;font-size:clamp(26px,4vw,36px);line-height:1.12;letter-spacing:-0.02em;color:var(--ink);font-variation-settings:'opsz' 80;margin-bottom:28px;">Raising the stakes, together.</p>
 
   <p class="intro-subtitle">
     You've seen the post.<br>

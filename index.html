@@ -1,0 +1,1921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Zero Retainer — OktoBuzz · 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,500&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ======================================================
+   TOKENS
+====================================================== */
+:root {
+  --red:        #DE232C;
+  --red-dark:   #B81B23;
+  --red-glow:   rgba(222, 35, 44, 0.12);
+  --red-soft:   rgba(222, 35, 44, 0.06);
+  --ink:        #13131A;
+  --body:       #3C3C46;
+  --muted:      #88888F;
+  --hairline:   #E5E5EA;
+  --bg:         #F9F9F6;
+  --card:       #FFFFFF;
+
+  --display:    'Fraunces', 'Times New Roman', serif;
+  --sans:       'DM Sans', system-ui, sans-serif;
+
+  --maxw:       700px;
+  --maxw-table: 1100px;
+  --pad:        clamp(20px, 5vw, 56px);
+  --radius:     14px;
+}
+
+/* ======================================================
+   RESET
+====================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--body);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+::selection { background: var(--red); color: white; }
+
+/* ======================================================
+   HEADER
+====================================================== */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(249, 249, 246, 0.92);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--hairline);
+}
+.header-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
+  padding: 16px var(--pad);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+.brand { display: flex; align-items: center; }
+.brand img { height: 60px; width: auto; display: block; }
+.header-step {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+.progress-track { height: 2px; background: var(--hairline); }
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-dark), var(--red));
+  width: 0%;
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ======================================================
+   LAYOUT
+====================================================== */
+main { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad); }
+.page { display: none; padding: 64px 0 120px; animation: pageIn 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+.page.active { display: block; }
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ======================================================
+   TYPOGRAPHY
+====================================================== */
+.eyebrow {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--red);
+  margin-bottom: 20px;
+}
+h1 {
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: clamp(36px, 6vw, 60px);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 28px;
+  font-variation-settings: "opsz" 100;
+}
+h1 em { font-style: italic; font-weight: 500; color: var(--red); }
+h2 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 6px;
+  font-variation-settings: "opsz" 80;
+}
+.section-intro {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(17px, 2.2vw, 20px);
+  line-height: 1.5;
+  color: var(--ink);
+  margin-bottom: 36px;
+  font-variation-settings: "opsz" 144;
+  opacity: 0.85;
+}
+p { margin-bottom: 18px; }
+p:last-child { margin-bottom: 0; }
+strong { font-weight: 600; color: var(--ink); }
+
+/* ======================================================
+   INTRO
+====================================================== */
+.intro-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 8px 16px 8px 8px;
+  margin-bottom: 36px;
+  font-size: 13px;
+  color: var(--body);
+  font-weight: 500;
+}
+.live-dot {
+  width: 8px; height: 8px;
+  background: var(--red);
+  border-radius: 50%;
+  animation: pulse 2s ease infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+.intro-subtitle {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--body);
+  margin-bottom: 20px;
+  max-width: 560px;
+}
+/* ── URL note for QC rows ── */
+.url-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+}
+.url-note {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--red);
+  letter-spacing: 0.02em;
+  padding-left: 2px;
+  opacity: 0.8;
+}
+
+/* ── Model Section — card grid ── */
+.model-section {
+  margin: 36px 0;
+}
+.model-section-label {
+  margin-bottom: 20px;
+}
+.model-eyebrow {
+  display: inline-block;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--red);
+  margin-bottom: 8px;
+}
+.model-subtext {
+  font-size: 14px;
+  color: var(--muted);
+  margin: 0;
+  line-height: 1.6;
+}
+.model-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+@media (max-width: 600px) {
+  .model-cards-grid { grid-template-columns: 1fr; }
+}
+.model-card-v2 {
+  background: var(--card);
+  border: 1.5px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.model-card-v2:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+}
+.model-card-accent {
+  background: var(--card);
+  border-color: var(--hairline);
+}
+.model-card-dark {
+  background: var(--card);
+  border-color: var(--hairline);
+}
+.model-card-tag {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+}
+.model-card-accent .model-card-tag { color: var(--muted); }
+.model-card-dark .model-card-tag { color: var(--muted); }
+.model-card-rate {
+  font-family: var(--sans);
+  font-size: 52px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+.model-card-accent .model-card-rate { color: var(--ink); }
+.model-card-dark .model-card-rate { color: var(--ink); }
+.model-card-desc {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.model-card-accent .model-card-desc { color: var(--body); }
+.model-card-dark .model-card-desc { color: var(--muted); }
+
+/* Math breakdown */
+.model-math {
+  background: var(--card);
+  border: 1.5px solid var(--hairline);
+  border-radius: 16px;
+  padding: 22px 24px;
+}
+.model-math-label {
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+.model-math-example {
+  font-size: 14px;
+  color: var(--body);
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+.model-math-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.model-math-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline);
+  gap: 12px;
+}
+.model-math-row:last-child { border-bottom: none; padding-bottom: 0; }
+.model-math-row:first-child { padding-top: 0; }
+.math-row-label {
+  font-size: 13px;
+  color: var(--body);
+}
+.math-row-label em {
+  font-style: normal;
+  color: var(--muted);
+  font-size: 12px;
+}
+.math-row-value {
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.model-math-total {
+  margin-top: 4px;
+  padding-top: 14px !important;
+  border-top: 1.5px solid var(--hairline);
+}
+.model-math-total .math-row-label { font-weight: 600; color: var(--ink); }
+.model-math-total .math-row-value { color: var(--ink); font-size: 20px; }
+.disclaimer-box {
+  background: #FFF8F0;
+  border: 1px solid rgba(222,35,44,0.14);
+  border-radius: 12px;
+  padding: 20px 24px;
+  margin: 28px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.disclaimer-box p { margin-bottom: 10px; }
+.disclaimer-box p:last-child { margin-bottom: 0; }
+.intro-footer {
+  margin-top: 40px;
+  padding-top: 24px;
+  border-top: 1px solid var(--hairline);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  font-size: 13px;
+  color: var(--muted);
+}
+.intro-footer a {
+  color: var(--muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.intro-footer a:hover { color: var(--ink); }
+.footer-dot { width: 4px; height: 4px; background: var(--red); border-radius: 50%; }
+
+/* ======================================================
+   FORM SECTIONS
+====================================================== */
+.form-section-header { margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--hairline); }
+.question { margin-bottom: 48px; }
+.question:last-of-type { margin-bottom: 0; }
+.q-num {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--red);
+  margin-bottom: 8px;
+  display: block;
+  font-variation-settings: "opsz" 40;
+}
+.q-label {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: clamp(18px, 2.6vw, 22px);
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin-bottom: 8px;
+  display: block;
+  font-variation-settings: "opsz" 80;
+}
+.q-hint {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-bottom: 16px;
+}
+.q-hint em { color: var(--ink); font-style: normal; font-weight: 500; }
+
+/* ======================================================
+   INPUTS
+====================================================== */
+.field-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 13px 15px;
+  border: 1.5px solid var(--hairline);
+  border-radius: var(--radius);
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--ink);
+  background: var(--card);
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-glow);
+}
+input::placeholder, textarea::placeholder { color: #C0C0C8; }
+textarea { min-height: 110px; resize: vertical; line-height: 1.6; }
+
+/* Select arrow */
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2388888F' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 38px;
+  cursor: pointer;
+}
+select option { color: var(--ink); }
+select.placeholder-shown { color: #C0C0C8; }
+
+/* Grids */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+@media (max-width: 540px) { .field-row { grid-template-columns: 1fr; } }
+.field-group { display: flex; flex-direction: column; gap: 6px; }
+
+/* URL stack */
+.url-stack { display: flex; flex-direction: column; gap: 8px; }
+.url-row { display: grid; grid-template-columns: 90px 1fr; gap: 10px; align-items: start; }
+.url-row-qc { align-items: start; }
+.url-platform {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-align: right;
+  padding-right: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* ======================================================
+   CHOICE CARDS (radio / checkbox)
+====================================================== */
+.choice-stack { display: flex; flex-direction: column; gap: 8px; }
+.choice-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 15px 18px;
+  border: 1.5px solid var(--hairline);
+  border-radius: var(--radius);
+  cursor: pointer;
+  background: var(--card);
+  transition: border-color 0.18s, background 0.18s, transform 0.15s;
+  user-select: none;
+}
+.choice-card:hover { border-color: #C5C5CC; transform: translateX(2px); }
+.choice-card input {
+  margin: 0;
+  appearance: none;
+  flex-shrink: 0;
+  width: 18px; height: 18px;
+  border: 1.5px solid #C5C5CC;
+  margin-top: 1px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.choice-card input[type="radio"] { border-radius: 50%; }
+.choice-card input[type="radio"]:checked { border-color: var(--red); border-width: 5px; }
+.choice-card input[type="checkbox"] { border-radius: 5px; }
+.choice-card input[type="checkbox"]:checked { background: var(--red); border-color: var(--red); }
+.choice-card input[type="checkbox"]:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 1px;
+  width: 5px; height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.choice-card:has(input:checked) { border-color: var(--red); background: var(--red-soft); }
+.choice-card-text { font-size: 14px; color: var(--ink); line-height: 1.5; }
+.choice-card-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+/* platform-chip CSS removed — platforms auto-detected from Part 1 URLs */
+
+/* ======================================================
+   PART 2 — DATA TABLE
+====================================================== */
+/* Full-bleed table wrapper that escapes the 700px maxw */
+.data-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1.5px solid var(--hairline);
+  border-radius: 16px;
+  background: var(--card);
+  margin-top: 8px;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
+}
+thead th {
+  padding: 12px 12px;
+  text-align: left;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.11em;
+  color: var(--muted);
+  background: var(--bg);
+  border-bottom: 1.5px solid var(--hairline);
+  white-space: nowrap;
+}
+thead th:first-child { padding-left: 16px; border-radius: 14px 0 0 0; min-width: 110px; }
+thead th:last-child  { border-radius: 0 14px 0 0; }
+tbody td {
+  padding: 10px 10px;
+  border-bottom: 1px solid var(--hairline);
+  vertical-align: middle;
+  min-width: 110px;
+}
+tbody td:first-child { padding-left: 16px; min-width: 110px; }
+tbody td:nth-child(2),
+tbody td:nth-child(3),
+tbody td:nth-child(7),
+tbody td:nth-child(8),
+tbody td:nth-child(9),
+tbody td:nth-child(11),
+tbody td:nth-child(12) { min-width: 100px; }
+tbody td:nth-child(4),
+tbody td:nth-child(5),
+tbody td:nth-child(6),
+tbody td:nth-child(10) { min-width: 140px; }
+tbody tr:last-child td { border-bottom: none; }
+.platform-cell {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+}
+.platform-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+.badge-amazon   { background: #FFF3E0; color: #E65100; }
+.badge-flipkart { background: #E3F2FD; color: #1565C0; }
+.badge-blinkit  { background: #F9FBE7; color: #558B2F; }
+.badge-zepto    { background: #F3E5F5; color: #6A1B9A; }
+.badge-instamart{ background: #FFF8E1; color: #F57F17; }
+td select {
+  width: 100%;
+  padding: 9px 28px 9px 10px;
+  font-size: 13px;
+  border-radius: 9px;
+  border-width: 1px;
+  background-position: right 9px center;
+  background-size: 10px;
+}
+td input[type="number"] {
+  width: 100%;
+  padding: 9px 8px;
+  font-size: 13px;
+  border-radius: 9px;
+  border-width: 1px;
+  text-align: center;
+}
+td input[type="number"]::-webkit-inner-spin-button,
+td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
+.no-platforms-msg {
+  padding: 32px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 14px;
+  font-style: italic;
+}
+.table-scroll-hint {
+  display: none;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+@media (max-width: 700px) {
+  .table-scroll-hint { display: block; }
+}
+
+/* ======================================================
+   PART 3 — DECIDING QUESTIONS
+====================================================== */
+.deciding-qs .question { margin-bottom: 52px; }
+.deciding-qs .question:last-child { margin-bottom: 0; }
+
+/* ======================================================
+   PART 4 — FINE PRINT
+====================================================== */
+.commit-list { display: flex; flex-direction: column; gap: 8px; }
+.commit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1.5px solid var(--hairline);
+  border-radius: var(--radius);
+  background: var(--card);
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s;
+  user-select: none;
+}
+.commit-item:has(input:checked) { border-color: var(--red); background: var(--red-soft); }
+.commit-item input {
+  appearance: none;
+  width: 18px; height: 18px;
+  border: 1.5px solid #C5C5CC;
+  border-radius: 5px;
+  flex-shrink: 0;
+  margin-top: 1px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.commit-item input:checked { background: var(--red); border-color: var(--red); }
+.commit-item input:checked::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 1px;
+  width: 5px; height: 9px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.commit-text { font-size: 14px; color: var(--ink); line-height: 1.5; }
+
+/* Video upload zone */
+.video-zone {
+  border: 1.5px dashed var(--hairline);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  background: var(--card);
+}
+.video-zone:hover { border-color: var(--red); background: var(--red-soft); }
+.video-zone-icon { font-size: 28px; margin-bottom: 10px; }
+.video-zone-label { font-size: 14px; color: var(--ink); font-weight: 500; margin-bottom: 4px; }
+.video-zone-sub { font-size: 12px; color: var(--muted); }
+.video-zone input[type="file"] { display: none; }
+.video-selected {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  background: var(--red-soft);
+  border: 1px solid rgba(222,35,44,0.2);
+  border-radius: 10px;
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--ink);
+  font-weight: 500;
+}
+.video-selected.show { display: flex; }
+
+/* Char counter */
+.char-row { display: flex; justify-content: flex-end; font-size: 12px; color: var(--muted); margin-top: 5px; }
+
+/* ======================================================
+   NAV + BUTTONS
+====================================================== */
+.nav-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 56px;
+  padding-top: 28px;
+  border-top: 1px solid var(--hairline);
+}
+.nav-row.end { justify-content: flex-end; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 15px 26px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  text-decoration: none;
+}
+.btn-primary { background: var(--red); color: white; box-shadow: 0 2px 8px rgba(222,35,44,0.2); }
+.btn-primary:hover { background: var(--red-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(222,35,44,0.3); }
+.btn-ghost { background: transparent; color: var(--muted); padding: 15px 14px; }
+.btn-ghost:hover { color: var(--ink); }
+.arr { transition: transform 0.22s ease; }
+.btn-primary:hover .arr { transform: translateX(3px); }
+.btn-ghost:hover .arr { transform: translateX(-3px); }
+
+/* ======================================================
+   ERRORS
+====================================================== */
+.field-error {
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 6px;
+  display: none;
+}
+.field-error.show { display: block; }
+
+/* ======================================================
+   THANKS PAGE
+====================================================== */
+.thanks-icon {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  animation: popIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1); }
+}
+.thanks-icon svg { width: 26px; height: 26px; stroke: white; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.next-steps {
+  margin: 36px 0;
+  background: var(--card);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  padding: 28px 32px;
+}
+.next-steps-label {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 22px;
+  font-variation-settings: "opsz" 60;
+}
+.step-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.step-item:first-of-type { padding-top: 0; }
+.step-item:last-child { border-bottom: none; padding-bottom: 0; }
+.step-num {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--red-soft);
+  border: 1px solid rgba(222,35,44,0.25);
+  color: var(--red);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.step-item.step-live .step-num { background: var(--red); color: white; border-color: var(--red); }
+.step-body strong { display: block; font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 3px; }
+.step-body p { font-size: 13px; color: var(--muted); margin: 0; line-height: 1.55; }
+.step-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--red); margin-left: 8px; }
+
+/* ======================================================
+   MISC
+====================================================== */
+.corner-tag {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  font-size: 10px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 500;
+  opacity: 0.5;
+  pointer-events: none;
+}
+@media (max-width: 600px) { .corner-tag { display: none; } }
+
+</style>
+</head>
+<body>
+
+<!-- ========= HEADER ========= -->
+<header>
+  <div class="header-inner">
+    <span class="header-step" id="step-label"></span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+</header>
+
+<main>
+
+<!-- ====================================================
+     PAGE: INTRO
+==================================================== -->
+<section class="page active" id="page-intro">
+  <div style="text-align:center;margin-bottom:28px;">
+    <img src="tzr-logo-cropped.png" alt="The Zero Retainer" style="height:200px;width:auto;display:inline-block;" />
+  </div>
+
+  <p class="intro-subtitle" style="font-family:var(--display);font-style:italic;font-weight:400;font-size:clamp(20px,2.8vw,26px);color:var(--ink);opacity:1;">Raising the stakes, together.</p>
+
+  <p class="intro-subtitle">
+    You've seen the post.<br>
+    You're applying to be one of <strong>2 brands</strong> OktoBuzz will work with over the next 6 months.<br>
+    No agency fee. We get paid only when your sales grow.
+  </p>
+
+  <p class="intro-subtitle">This form takes about <strong>5–10 minutes.</strong> (but take as much time as you need to get it right)</p>
+
+  <p class="intro-subtitle">We read every answer ourselves. This isn't a lead-gen exercise: the quality of your answers (not just the numbers) decides who gets a call.</p>
+
+  <p style="font-size:14px;color:var(--muted);margin-bottom:36px;">
+    And the call will be with our founders <strong style="color:var(--ink)">Hemal and Neha.</strong><br>
+    So be specific, and be honest. If your situation is messy, say so. We'd rather work with a founder who's clear about what's broken than one who pretends everything is fine.
+  </p>
+
+  <div class="model-section">
+    <div class="model-section-label">
+      <span class="model-eyebrow">How we (both) make money</span>
+      <p class="model-subtext">The whole model is built on three numbers — and you can hold us to all of them. First, we agree on a baseline: your average monthly sales across all platforms over the 12 months before we start. Everything else is calculated against that number.</p>
+    </div>
+    <div class="model-cards-grid">
+      <div class="model-card-v2">
+        <div class="model-card-tag">Baseline</div>
+        <div class="model-card-rate">2.5%</div>
+        <div class="model-card-desc">On your baseline revenue, every month. This covers our cost of running the engine — it's not where we make real money, it keeps the lights on while we build.</div>
+      </div>
+      <div class="model-card-v2 model-card-accent">
+        <div class="model-card-tag">Growth — up to 2×</div>
+        <div class="model-card-rate">20%</div>
+        <div class="model-card-desc">Every rupee of monthly sales above your baseline, up to the point where we've doubled your revenue.</div>
+      </div>
+      <div class="model-card-v2 model-card-dark">
+        <div class="model-card-tag">Scale — beyond 2×</div>
+        <div class="model-card-rate">25%</div>
+        <div class="model-card-desc">Once monthly sales cross twice the baseline. Getting a brand to 2.5× or 3× is genuinely harder — and worth more.</div>
+      </div>
+    </div>
+    <div class="model-math">
+      <div class="model-math-label">The maths, in plain numbers</div>
+      <div class="model-math-example">
+        Say your baseline is <strong>&#8377;10 lakh/month</strong> and we grow you to <strong>&#8377;25 lakh</strong>:
+      </div>
+      <div class="model-math-rows">
+        <div class="model-math-row">
+          <span class="math-row-label">Base fee &nbsp;<em>2.5% &times; &#8377;10L</em></span>
+          <span class="math-row-value">&#8377;25,000</span>
+        </div>
+        <div class="model-math-row">
+          <span class="math-row-label">Growth to 2&times; &nbsp;<em>20% &times; &#8377;10L</em></span>
+          <span class="math-row-value">&#8377;2,00,000</span>
+        </div>
+        <div class="model-math-row">
+          <span class="math-row-label">Beyond 2&times; &nbsp;<em>25% &times; &#8377;5L</em></span>
+          <span class="math-row-value">&#8377;1,25,000</span>
+        </div>
+        <div class="model-math-row model-math-total">
+          <span class="math-row-label">OktoBuzz total &nbsp;<em>on a brand we've 2.5&times;'d</em></span>
+          <span class="math-row-value">&#8377;3.5L/mo</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaimer-box">
+    <p><strong>What we actually do:</strong> Performance marketing on Amazon, Flipkart and quick commerce. Campaign strategy, bid management, keyword &amp; targeting optimisation, ACoS control, scaling. We run the ad engine on your existing listings.</p>
+    <p>We don't redo listings, create content, or build brand stores. Your listings need to already be good enough to convert. You pay platform ad spends directly. We never touch your money.</p>
+    <p style="margin-top:10px;padding-top:12px;border-top:1px solid rgba(222,35,44,0.1);"><strong>One honest note:</strong> you know your margins better than we ever will. If our fees don't leave you enough room, this format isn't for you — and that's completely fine.</p>
+  </div>
+
+  <div class="nav-row end">
+    <button class="btn btn-primary" onclick="goTo('part1')">Start application <span class="arr">→</span></button>
+  </div>
+
+  <div class="intro-footer">
+    <a href="https://oktobuzz.com" target="_blank"><span class="footer-dot"></span>oktobuzz.com</a>
+    <a href="mailto:growth@oktobuzz.com"><span class="footer-dot"></span>growth@oktobuzz.com</a>
+  </div>
+</section>
+
+<!-- ====================================================
+     PAGE: PART 1 — About You
+==================================================== -->
+<section class="page" id="page-part1">
+  <div class="form-section-header">
+    <span class="eyebrow">Part 01 — Tell us what you've built</span>
+    <h2>All about you &amp; your brand.</h2>
+    <p class="section-intro">Quick facts. We'll get to the harder questions in a minute.</p>
+  </div>
+
+  <!-- Q1 -->
+  <div class="question" id="q1">
+    <span class="q-num">01</span>
+    <label class="q-label">First up, your introduction.</label>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="q1_name">Name</label>
+        <input type="text" id="q1_name" name="name" placeholder="Priya Sharma" />
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="q1_role">Designation</label>
+        <input type="text" id="q1_role" name="designation" placeholder="Founder &amp; CEO" />
+      </div>
+    </div>
+    <div class="field-row">
+      <div class="field-group">
+        <label class="field-label" for="q1_mobile">Mobile no.</label>
+        <input type="tel" id="q1_mobile" name="mobile" placeholder="+91 98765 43210" />
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="q1_email">E-mail</label>
+        <input type="email" id="q1_email" name="email" placeholder="priya@brand.com" />
+      </div>
+    </div>
+    <div class="field-error" id="err-q1">Please fill in all four fields to continue.</div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question" id="q2">
+    <span class="q-num">02</span>
+    <label class="q-label">What's your brand called, and where can we see it?</label>
+    <p class="q-hint">Drop the website and your main platform links. We'll spend 30 seconds looking before we read your answers — make it easy for us.</p>
+
+    <div class="field-row" style="margin-bottom:14px;">
+      <div class="field-group">
+        <label class="field-label" for="q2_brand">Brand Name</label>
+        <input type="text" id="q2_brand" name="brand_name" placeholder="Your brand name" />
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="q2_website">Website</label>
+        <input type="text" id="q2_website" name="url_website" placeholder="https://yourbrand.com" />
+      </div>
+    </div>
+
+    <div class="url-stack">
+      <div class="url-row">
+        <span class="url-platform">Amazon</span>
+        <input type="text" id="url_amazon" name="url_amazon" placeholder="https://amazon.in/stores/..." />
+      </div>
+      <div class="url-row">
+        <span class="url-platform">Flipkart</span>
+        <input type="text" id="url_flipkart" name="url_flipkart" placeholder="https://flipkart.com/..." />
+      </div>
+      <div class="url-row url-row-qc">
+        <span class="url-platform">Blinkit</span>
+        <div class="url-input-wrap">
+          <input type="text" id="url_blinkit" name="url_blinkit" placeholder="https://blinkit.com/..." />
+          <span class="url-note">Please add a single product URL</span>
+        </div>
+      </div>
+      <div class="url-row url-row-qc">
+        <span class="url-platform">Zepto</span>
+        <div class="url-input-wrap">
+          <input type="text" id="url_zepto" name="url_zepto" placeholder="https://zeptonow.com/..." />
+          <span class="url-note">Please add a single product URL</span>
+        </div>
+      </div>
+      <div class="url-row url-row-qc">
+        <span class="url-platform">Instamart</span>
+        <div class="url-input-wrap">
+          <input type="text" id="url_instamart" name="url_instamart" placeholder="https://swiggy.com/..." />
+          <span class="url-note">Please add a single product URL</span>
+        </div>
+      </div>
+      <div class="url-row">
+        <span class="url-platform">Other</span>
+        <input type="text" id="url_other" name="url_other" placeholder="Any other platform URL" />
+      </div>
+    </div>
+    <div class="field-error" id="err-q2">Please enter your brand name and at least one platform link.</div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question" id="q3">
+    <span class="q-num">03</span>
+    <label class="q-label" for="q3_text">In one line: what do you sell, and who buys it?</label>
+    <p class="q-hint"><em>"Premium ghee for North Indian families who cook every day"</em> beats <em>"premium dairy products in the wellness segment."</em></p>
+    <textarea id="q3_text" name="one_liner" placeholder="Write your one-liner here…" rows="3" maxlength="200" oninput="updateCount('q3_text','q3_count')"></textarea>
+    <div class="char-row"><span id="q3_count">0</span> / 200</div>
+    <div class="field-error" id="err-q3">This one's important. Give us one sharp line.</div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="goTo('intro')"><span class="arr">←</span> Back</button>
+    <button class="btn btn-primary" onclick="validateAndNext('part1','part1b')">Continue <span class="arr">→</span></button>
+  </div>
+</section>
+
+<!-- ====================================================
+     PAGE: PART 2 — Name a Number
+==================================================== -->
+<section class="page" id="page-part1b">
+  <div class="form-section-header">
+    <span class="eyebrow">Part 02 — Name a number</span>
+    <h2>Where you are today.</h2>
+    <p class="section-intro">Ranges are fine. No screenshots required… yet.</p>
+  </div>
+
+  <!-- Q4: Monthly offline revenue -->
+  <div class="question" id="q4">
+    <span class="q-num">04</span>
+    <label class="q-label">Monthly offline revenue</label>
+    <p class="q-hint">This helps us understand the scale, growth opportunity and scope of your business.</p>
+    <div class="choice-stack">
+      <label class="choice-card"><input type="radio" name="offline_revenue" value="Less than ₹5 lakh" /><span class="choice-card-text">Less than ₹5 lakh</span></label>
+      <label class="choice-card"><input type="radio" name="offline_revenue" value="₹5L – ₹25L" /><span class="choice-card-text">₹5L – ₹25L</span></label>
+      <label class="choice-card"><input type="radio" name="offline_revenue" value="₹25L – ₹50L" /><span class="choice-card-text">₹25L – ₹50L</span></label>
+      <label class="choice-card"><input type="radio" name="offline_revenue" value="₹50L – ₹1 crore" /><span class="choice-card-text">₹50L – ₹1 crore</span></label>
+      <label class="choice-card"><input type="radio" name="offline_revenue" value="₹1 Cr – ₹3 Cr" /><span class="choice-card-text">₹1 Cr – ₹3 Cr</span></label>
+      <label class="choice-card"><input type="radio" name="offline_revenue" value="₹3 Cr – ₹5 Cr" /><span class="choice-card-text">₹3 Cr – ₹5 Cr</span></label>
+      <label class="choice-card"><input type="radio" name="offline_revenue" value="More than ₹5 Cr" /><span class="choice-card-text">More than ₹5 Cr</span></label>
+    </div>
+    <div class="field-error" id="err-q4">Please select one option.</div>
+  </div>
+
+  <!-- Q5: Monthly online revenue -->
+  <div class="question" id="q5">
+    <span class="q-num">05</span>
+    <label class="q-label">Monthly online revenue</label>
+    <div class="choice-stack">
+      <label class="choice-card"><input type="radio" name="online_revenue" value="Below ₹50L/month" /><span class="choice-card-text">Below ₹50L/month</span></label>
+      <label class="choice-card"><input type="radio" name="online_revenue" value="₹50L–₹75L/month" /><span class="choice-card-text">₹50L – ₹75L/month</span></label>
+      <label class="choice-card"><input type="radio" name="online_revenue" value="Above ₹75L/month" /><span class="choice-card-text">Above ₹75L/month</span></label>
+      <label class="choice-card"><input type="radio" name="online_revenue" value="Not Selling" /><span class="choice-card-text">Not Selling</span></label>
+    </div>
+    <div class="field-error" id="err-q5">Please select one option.</div>
+  </div>
+
+  <!-- Q6: Ad spend commitment -->
+  <div class="question" id="q6">
+    <span class="q-num">06</span>
+    <label class="q-label">Ad spend commitment <span style="font-weight:400;color:var(--muted);font-family:var(--sans);font-size:14px;">(on marketplaces)</span></label>
+    <div class="choice-stack">
+      <label class="choice-card"><input type="radio" name="ad_spend" value="Below ₹3L/month" /><span class="choice-card-text">Below ₹3L/month</span></label>
+      <label class="choice-card"><input type="radio" name="ad_spend" value="₹3L–₹5L/month" /><span class="choice-card-text">₹3L – ₹5L/month</span></label>
+      <label class="choice-card"><input type="radio" name="ad_spend" value="₹5L+/month" /><span class="choice-card-text">₹5L+/month</span></label>
+      <label class="choice-card"><input type="radio" name="ad_spend" value="Currently not spending" /><span class="choice-card-text">Currently not spending</span></label>
+    </div>
+    <div class="field-error" id="err-q6">Please select one option.</div>
+  </div>
+
+  <!-- Q7: Gross margins -->
+  <div class="question" id="q7">
+    <span class="q-num">07</span>
+    <label class="q-label">What are the brand's overall gross margins?</label>
+    <div class="choice-stack">
+      <label class="choice-card"><input type="radio" name="gross_margins" value="Below 40%" /><span class="choice-card-text">Below 40%</span></label>
+      <label class="choice-card"><input type="radio" name="gross_margins" value="40% – 50%" /><span class="choice-card-text">40% – 50%</span></label>
+      <label class="choice-card"><input type="radio" name="gross_margins" value="50% – 60%" /><span class="choice-card-text">50% – 60%</span></label>
+      <label class="choice-card"><input type="radio" name="gross_margins" value="More than 60%" /><span class="choice-card-text">More than 60%</span></label>
+    </div>
+    <div class="field-error" id="err-q7">Please select one option.</div>
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="goTo('part1')"><span class="arr">←</span> Back</button>
+    <button class="btn btn-primary" onclick="validateAndNext('part1b','part2')">Continue <span class="arr">→</span></button>
+  </div>
+</section>
+
+<!-- ====================================================
+     PAGE: PART 3 — Platform Data Table
+==================================================== -->
+<section class="page" id="page-part2">
+  <div class="form-section-header">
+    <span class="eyebrow">Part 03 — Deeper dive in platforms</span>
+    <h2>Where you are today.</h2>
+    <p class="section-intro">Ranges are fine. Fill in what you can for each platform you're active on.</p>
+  </div>
+
+  <!-- Dynamic table — platforms driven from Part 1 URL inputs -->
+  <div class="data-table-wrap" id="table-section">
+      <table id="platform-table">
+        <thead id="platform-thead">
+          <tr>
+            <th style="padding-left:16px;">Platform</th>
+            <th>Platform Presence</th>
+            <th>Fulfilment</th>
+            <th>Account Health</th>
+            <th>A+ Content / Rich Page</th>
+            <th>Avg Ratings</th>
+            <th>Listed SKUs</th>
+            <th>SKUs on Ads</th>
+            <th>Ad Performance</th>
+          </tr>
+        </thead>
+        <tbody id="platform-tbody">
+          <tr><td colspan="9" class="no-platforms-msg">Fill in platform URLs on the previous page and they will appear here automatically.</td></tr>
+        </tbody>
+      </table>
+  </div>
+  <p class="table-scroll-hint">← Swipe to see all columns →</p>
+  <div class="field-error" id="err-table-incomplete" style="text-align:center;margin-top:10px;">Please fill in all dropdowns in the table before continuing.</div>
+  <div class="field-error" id="err-platforms" style="text-align:center;margin-top:8px;">Please go back and fill in at least one platform URL in Part 1.</div>
+
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="goTo('part1b')"><span class="arr">←</span> Back</button>
+    <button class="btn btn-primary" onclick="validateAndNext('part2','part3')">Continue <span class="arr">→</span></button>
+  </div>
+</section>
+
+<!-- ====================================================
+     PAGE: PART 3 — Deciding Questions
+==================================================== -->
+<section class="page" id="page-part3">
+  <div class="form-section-header">
+    <span class="eyebrow">Part 04 — The deciding questions</span>
+    <h2>Tell us how you think &amp; feel.</h2>
+    <p class="section-intro">Two questions. Honest answers travel further than polished ones.</p>
+  </div>
+
+  <div class="deciding-qs">
+
+    <!-- Q8 -->
+    <div class="question" id="q8">
+      <span class="q-num">08</span>
+      <label class="q-label" for="q8_text">Tell us your singular vision for the brand, in the coming years.</label>
+      <p class="q-hint">Answer in one sentence.</p>
+      <textarea id="q8_text" name="q8" placeholder="Our vision is…" maxlength="300" rows="3" oninput="updateCount('q8_text','q8_count')"></textarea>
+      <div class="char-row"><span id="q8_count">0</span> / 300</div>
+      <div class="field-error" id="err-q8">Please share your vision in one sentence.</div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="question" id="q9">
+      <span class="q-num">09</span>
+      <label class="q-label" for="q9_text">In your words, what is your biggest pain point?</label>
+      <p class="q-hint">Answer in one sentence.</p>
+      <textarea id="q9_text" name="q9" placeholder="Our biggest challenge right now is…" maxlength="300" rows="3" oninput="updateCount('q9_text','q9_count')"></textarea>
+      <div class="char-row"><span id="q9_count">0</span> / 300</div>
+      <div class="field-error" id="err-q9">Please answer in one sentence.</div>
+    </div>
+
+  </div>
+
+  <div class="nav-row">
+    <button class="btn btn-ghost" onclick="goTo('part2')"><span class="arr">←</span> Back</button>
+    <button class="btn btn-primary" onclick="validateAndNext('part3','part4')">Continue <span class="arr">→</span></button>
+  </div>
+</section>
+
+<!-- ====================================================
+     PAGE: PART 4 — Fine Print
+==================================================== -->
+<section class="page" id="page-part4">
+  <div class="form-section-header">
+    <span class="eyebrow">Part 04 — The fine print</span>
+    <h2>A few things before it's done.</h2>
+    <p class="section-intro">Almost there. These are the practical checks.</p>
+  </div>
+
+  <!-- Q11 -->
+  <div class="question" id="q11">
+    <span class="q-num">11</span>
+    <label class="q-label">Can you commit to all four of these?</label>
+    <p class="q-hint">If you can't honestly tick all four, you're not the right brand for this format — and that's okay. There are other ways we could work together.</p>
+
+    <div class="commit-list">
+      <label class="commit-item">
+        <input type="checkbox" name="commit" value="contract" />
+        <span class="commit-text">A 6-month engagement on a signed contract</span>
+      </label>
+      <label class="commit-item">
+        <input type="checkbox" name="commit" value="access" />
+        <span class="commit-text">Sharing Seller Central, Shopify, Google Analytics and payment gateway access</span>
+      </label>
+      <label class="commit-item">
+        <input type="checkbox" name="commit" value="calls" />
+        <span class="commit-text">A weekly 45-minute working call</span>
+      </label>
+      <label class="commit-item">
+        <input type="checkbox" name="commit" value="founder" />
+        <span class="commit-text">Personal founder involvement — not delegated to your marketing manager</span>
+      </label>
+    </div>
+    <div class="field-error" id="err-q11">Please tick all four commitments to continue.</div>
+  </div>
+
+  <!-- Q12 -->
+  <div class="question" id="q12">
+    <span class="q-num">12</span>
+    <label class="q-label" for="q12_text">Anything else we should know? <span style="font-family:var(--sans);font-size:14px;font-weight:400;color:var(--muted);">(optional)</span></label>
+    <p class="q-hint">A constraint, a context, or a question you'd like us to answer before we talk.</p>
+    <textarea id="q12_text" name="q12" placeholder="Anything that didn't fit elsewhere…" maxlength="400" oninput="updateCount('q12_text','q12_count')"></textarea>
+    <div class="char-row"><span id="q12_count">0</span> / 400</div>
+  </div>
+
+  <!-- Q13 -->
+  <div class="question" id="q13">
+    <span class="q-num">13</span>
+    <label class="q-label" for="q13_text">Elevator pitch — why is your brand perfect for this model?</label>
+    <p class="q-hint">Max 300 characters. Make it land.</p>
+    <textarea id="q13_text" name="elevator" placeholder="Make it land." maxlength="300" rows="2" oninput="updateCount('q13_text','q13_count')"></textarea>
+    <div class="char-row"><span id="q13_count">0</span> / 300</div>
+    <div class="field-error" id="err-q13">Leave us with one great line.</div>
+  </div>
+
+  <div class="nav-row" style="flex-direction:column;align-items:stretch;gap:16px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <button class="btn btn-ghost" onclick="goTo('part3')"><span class="arr">←</span> Back</button>
+      <button class="btn btn-primary" onclick="submitForm()">Submit application <span class="arr">→</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ====================================================
+     PAGE: THANKS
+==================================================== -->
+<section class="page" id="page-thanks" style="display:flex;align-items:center;justify-content:center;min-height:100vh;">
+  <h2 style="font-size:28px;font-weight:500;color:var(--ink);margin:0;text-align:center;">Thank you for your entry.</h2>
+</section>
+
+</main>
+
+<div class="corner-tag">OktoBuzz · The Zero Retainer</div>
+
+<script>
+/* ======================================================
+   DATA — per-platform, per-column dropdown config
+   type:'text' = no dropdown, render as plain greyed input
+====================================================== */
+var PLATFORM_COLS = {
+  amazon: [
+    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
+    { key: 'fulfilment',  header: 'Fulfilment',             type: 'select', opts: ['Platform Fulfilled', 'Self'] },
+    { key: 'acct_health', header: 'Account Health',         type: 'select', opts: ['Healthy Account, Buy Box 80%+', 'Active, some flags/warnings', 'Suspended/No Account'] },
+    { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'select', opts: ['Strong catalog, A+ content live', 'Decent titles, missing A+ / images', 'Poor listings, thin catalog'] },
+    { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
+    { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['3 months data available, improvable', 'Running ads, poor ACoS (60%+)', 'No Ad history / blind'] }
+  ],
+  flipkart: [
+    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
+    { key: 'fulfilment',  header: 'Fulfilment',             type: 'select', opts: ['Platform Fulfilled', 'Self'] },
+    { key: 'acct_health', header: 'Account Health',         type: 'select', opts: ['Active, average metrics', 'FAB seller, low cancellation/return rate', 'Penalties / poor seller metrics'] },
+    { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'select', opts: ['Brand Hub enrolled, rich content live', 'Decent, missing rich media', 'Basic listings only'] },
+    { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
+    { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['Active FKA campaigns, data accessible', 'Some spend, no tracking / data', 'Zero Flipkart ad history'] }
+  ],
+  blinkit: [
+    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
+    { key: 'fulfilment',  header: 'Fulfilment',             type: 'text' },
+    { key: 'acct_health', header: 'Account Health',         type: 'text' },
+    { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'text' },
+    { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
+    { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['3 months data available, improvable', 'Running ads, poor ACoS (60%+)', 'No Ad history / blind'] }
+  ],
+  zepto: [
+    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
+    { key: 'fulfilment',  header: 'Fulfilment',             type: 'text' },
+    { key: 'acct_health', header: 'Account Health',         type: 'text' },
+    { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'text' },
+    { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
+    { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['3 months data available, improvable', 'Running ads, poor ACoS (60%+)', 'No Ad history / blind'] }
+  ],
+  instamart: [
+    { key: 'presence',    header: 'Platform Presence',      type: 'select', opts: ['Yes', 'No'] },
+    { key: 'fulfilment',  header: 'Fulfilment',             type: 'text' },
+    { key: 'acct_health', header: 'Account Health',         type: 'text' },
+    { key: 'aplus',       header: 'A+ Content / Rich Page', type: 'text' },
+    { key: 'ratings',     header: 'Avg Ratings',            type: 'select', opts: ['4+ stars', '3-4 stars', 'Below 3 stars'] },
+    { key: 'skus_listed', header: 'Listed SKUs',            type: 'select', opts: ['15 and above', '10-15', '5-10'] },
+    { key: 'skus_ads',    header: 'SKUs on Ads',            type: 'select', opts: ['100+', '50-100', '10-50', 'Below 10'] },
+    { key: 'ad_perf',     header: 'Ad Performance',         type: 'select', opts: ['3 months data available, improvable', 'Running ads, poor ACoS (60%+)', 'No Ad history / blind'] }
+  ]
+};
+
+var PLATFORM_META = {
+  amazon:    { label: 'Amazon',    badge: 'badge-amazon' },
+  flipkart:  { label: 'Flipkart',  badge: 'badge-flipkart' },
+  blinkit:   { label: 'Blinkit',   badge: 'badge-blinkit' },
+  zepto:     { label: 'Zepto',     badge: 'badge-zepto' },
+  instamart: { label: 'Instamart', badge: 'badge-instamart' }
+};
+
+/* ======================================================
+   TABLE BUILDER
+   Called AFTER goTo('part2') so DOM elements exist
+====================================================== */
+function rebuildTable() {
+  var tbody = document.getElementById('platform-tbody');
+  var thead = document.getElementById('platform-thead');
+
+  // Guard — elements might not be in DOM yet, silently return
+  if (!tbody || !thead) return;
+
+  var urlMap = {
+    amazon:    'url_amazon',
+    flipkart:  'url_flipkart',
+    blinkit:   'url_blinkit',
+    zepto:     'url_zepto',
+    instamart: 'url_instamart'
+  };
+
+  var active = [];
+  Object.keys(urlMap).forEach(function(platform) {
+    var el = document.getElementById(urlMap[platform]);
+    if (el && el.value.trim()) active.push(platform);
+  });
+
+  var errEl = document.getElementById('err-platforms');
+  if (errEl) errEl.classList.remove('show');
+
+  if (active.length === 0) {
+    thead.innerHTML = '<tr><th style="padding-left:16px;">Platform</th><th>Platform Presence</th><th>Fulfilment</th><th>Account Health</th><th>A+ Content / Rich Page</th><th>Avg Ratings</th><th>Listed SKUs</th><th>SKUs on Ads</th><th>Ad Performance</th></tr>';
+    tbody.innerHTML = '<tr><td colspan="9" class="no-platforms-msg">Fill in platform URLs on the previous page and they will appear here automatically.</td></tr>';
+    return;
+  }
+
+  // Build header
+  var firstCols = PLATFORM_COLS[active[0]];
+  var thRow = document.createElement('tr');
+  var thFirst = document.createElement('th');
+  thFirst.style.paddingLeft = '16px';
+  thFirst.textContent = 'Platform';
+  thRow.appendChild(thFirst);
+  firstCols.forEach(function(col) {
+    var th = document.createElement('th');
+    th.textContent = col.header;
+    thRow.appendChild(th);
+  });
+  thead.innerHTML = '';
+  thead.appendChild(thRow);
+
+  // Build rows
+  tbody.innerHTML = '';
+  active.forEach(function(platform) {
+    var meta = PLATFORM_META[platform];
+    var cols = PLATFORM_COLS[platform];
+    var tr = document.createElement('tr');
+
+    // Platform badge
+    var tdP = document.createElement('td');
+    tdP.className = 'platform-cell';
+    var badge = document.createElement('span');
+    badge.className = 'platform-badge ' + meta.badge;
+    badge.textContent = meta.label;
+    tdP.appendChild(badge);
+    tr.appendChild(tdP);
+
+    // Data cells
+    cols.forEach(function(col) {
+      var td = document.createElement('td');
+      if (col.type === 'select') {
+        var sel = document.createElement('select');
+        sel.name = platform + '_' + col.key;
+        sel.className = 'placeholder-shown';
+        var def = document.createElement('option');
+        def.value = '';
+        def.textContent = '\u2014 select \u2014';
+        sel.appendChild(def);
+        col.opts.forEach(function(o) {
+          var opt = document.createElement('option');
+          opt.value = o;
+          opt.textContent = o;
+          sel.appendChild(opt);
+        });
+        sel.addEventListener('change', function() {
+          this.classList.toggle('placeholder-shown', this.value === '');
+          if (this.value) {
+            this.style.borderColor = '';
+            this.style.boxShadow = '';
+            // Hide table error if all selects now filled
+            var allFilled = true;
+            var tbody2 = document.getElementById('platform-tbody');
+            if (tbody2) {
+              tbody2.querySelectorAll('select').forEach(function(s) {
+                if (!s.value) allFilled = false;
+              });
+            }
+            if (allFilled) {
+              var errEl = document.getElementById('err-table-incomplete');
+              if (errEl) errEl.classList.remove('show');
+            }
+          }
+        });
+        td.appendChild(sel);
+      } else {
+        var inp = document.createElement('input');
+        inp.type = 'text';
+        inp.name = platform + '_' + col.key;
+        inp.placeholder = 'N/A';
+        inp.readOnly = true;
+        inp.style.cssText = 'background:#F5F5F3;color:#ABABAF;cursor:not-allowed;';
+        td.appendChild(inp);
+      }
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  });
+}
+
+/* ======================================================
+   NAVIGATION
+====================================================== */
+var currentPage = 'intro';
+
+function goTo(pageId) {
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  var target = document.getElementById('page-' + pageId);
+  if (target) target.classList.add('active');
+  currentPage = pageId;
+  updateUI();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Build table AFTER page is shown so DOM elements exist
+  if (pageId === 'part2') rebuildTable();
+}
+
+function updateUI() {
+  var steps = { intro: 3, part1: 25, part2: 50, part3: 75, part4: 92, thanks: 100 };
+  document.getElementById('progress').style.width = (steps[currentPage] || 3) + '%';
+  var labels = {
+    intro:  '',
+    part1:  'About You',
+    part2:  'Your Numbers',
+    part3:  'How You Think',
+    part4:  'Fine Print',
+    thanks: 'Application submitted'
+  };
+  document.getElementById('step-label').textContent = labels[currentPage] || '';
+}
+
+/* ======================================================
+   VALIDATION
+====================================================== */
+function clearAllErrors() {
+  document.querySelectorAll('.field-error').forEach(function(e) {
+    e.classList.remove('show');
+  });
+}
+
+function showErr(id) {
+  var el = document.getElementById('err-' + id);
+  if (el) {
+    el.classList.add('show');
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function validatePart1() {
+  clearAllErrors();
+  var ok = true;
+  var q1Missing = ['q1_name', 'q1_role', 'q1_mobile', 'q1_email'].some(function(id) {
+    return !document.getElementById(id).value.trim();
+  });
+  if (q1Missing) { showErr('q1'); ok = false; }
+  var brandName = document.getElementById('q2_brand').value.trim();
+  var anyUrl = ['url_amazon', 'url_flipkart', 'url_blinkit', 'url_zepto', 'url_instamart', 'url_other', 'q2_website'].some(function(id) {
+    var el = document.getElementById(id);
+    return el && el.value.trim();
+  });
+  if (!brandName || !anyUrl) { showErr('q2'); ok = false; }
+  if (!document.getElementById('q3_text').value.trim()) { showErr('q3'); ok = false; }
+  return ok;
+}
+
+function validatePart1b() {
+  clearAllErrors();
+  var ok = true;
+  var fields = [
+    { name: 'offline_revenue', err: 'q4' },
+    { name: 'online_revenue',  err: 'q5' },
+    { name: 'ad_spend',        err: 'q6' },
+    { name: 'gross_margins',   err: 'q7' }
+  ];
+  fields.forEach(function(f) {
+    if (!document.querySelector('input[name="' + f.name + '"]:checked')) {
+      showErr(f.err);
+      ok = false;
+    }
+  });
+  return ok;
+}
+
+function validatePart2() {
+  clearAllErrors();
+  var anyFilled = ['url_amazon', 'url_flipkart', 'url_blinkit', 'url_zepto', 'url_instamart'].some(function(id) {
+    var el = document.getElementById(id);
+    return el && el.value.trim();
+  });
+  if (!anyFilled) { showErr('platforms'); return false; }
+
+  // Check every SELECT in the table has a value chosen
+  var tbody = document.getElementById('platform-tbody');
+  if (tbody) {
+    var selects = tbody.querySelectorAll('select');
+    var missingSelect = false;
+    selects.forEach(function(sel) {
+      if (!sel.value) {
+        sel.style.borderColor = 'var(--red)';
+        sel.style.boxShadow = '0 0 0 3px var(--red-glow)';
+        missingSelect = true;
+      }
+    });
+    if (missingSelect) {
+      showErr('table-incomplete');
+      return false;
+    }
+  }
+  return true;
+}
+
+function validatePart3() {
+  clearAllErrors();
+  var ok = true;
+  if (!document.getElementById('q8_text').value.trim()) { showErr('q8'); ok = false; }
+  if (!document.getElementById('q9_text').value.trim()) { showErr('q9'); ok = false; }
+  return ok;
+}
+
+function validatePart4() {
+  clearAllErrors();
+  var ok = true;
+  // commit checkboxes are optional — no validation required
+  if (!document.getElementById('q13_text').value.trim()) { showErr('q13'); ok = false; }
+  return ok;
+}
+
+function validateAndNext(fromPage, toPage) {
+  var validators = {
+    part1: validatePart1,
+    part1b: validatePart1b,
+    part2: validatePart2,
+    part3: validatePart3,
+    part4: validatePart4
+  };
+  var fn = validators[fromPage];
+  if (fn && !fn()) return;
+  goTo(toPage);
+}
+
+async function submitForm() {
+  if (!validatePart4()) return;
+
+  // Collect all form data
+  var data = {};
+  document.querySelectorAll('input, textarea, select').forEach(function(el) {
+    if (!el.name) return;
+    if (el.type === 'checkbox' || el.type === 'radio') {
+      if (el.checked) {
+        if (!data[el.name]) data[el.name] = [];
+        data[el.name].push(el.value);
+      }
+    } else if (el.type !== 'file') {
+      data[el.name] = el.value;
+    }
+  });
+
+  // Loading state
+  var submitBtn = document.querySelector('#page-part4 .btn-primary');
+  var originalHTML = submitBtn.innerHTML;
+  submitBtn.disabled = true;
+  submitBtn.innerHTML = 'Sending… ⏳';
+
+  // Works whether the file is opened via file:// or http://localhost:3000
+  var serverUrl = (window.location.protocol === 'file:')
+    ? 'http://localhost:3000/submit'
+    : '/submit';
+
+  try {
+    var res = await fetch(serverUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    var json = await res.json();
+    if (json.ok) {
+      goTo('thanks');
+      // Save submission + score to DB (non-blocking — failure doesn't affect user)
+      try {
+        var scoreResult = calculateScore();
+        var pct = Math.round(scoreResult.score10 * 10);
+        var scoreLabel = pct < 40 ? 'Poor' : pct < 70 ? 'Average' : 'Strong';
+        var dbUrl = (window.location.protocol === 'file:')
+          ? 'http://localhost:3000/save-to-db'
+          : '/save-to-db';
+        fetch(dbUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ formData: data, score: scoreResult.score10, scoreLabel: scoreLabel })
+        }).catch(function(e) { console.warn('DB save failed (non-fatal):', e.message); });
+      } catch(e) { console.warn('Score calc error:', e); }
+    } else {
+      alert('Server error: ' + (json.error || 'Unknown error. Check terminal for details.'));
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = originalHTML;
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Could not reach the server at localhost:3000.\n\nMake sure you have run: node server.js\n\nTerminal error: ' + err.message);
+    submitBtn.disabled = false;
+    submitBtn.innerHTML = originalHTML;
+  }
+}
+
+/* ======================================================
+   HELPERS
+====================================================== */
+function updateCount(id, counterId) {
+  var el = document.getElementById(id);
+  var counter = document.getElementById(counterId);
+  if (el && counter) counter.textContent = el.value.length;
+}
+
+function handleVideoSelect(input) {
+  if (input.files && input.files[0]) {
+    document.getElementById('video-filename').textContent = input.files[0].name;
+    document.getElementById('video-selected').classList.add('show');
+  }
+}
+
+function clearVideo() {
+  document.getElementById('video-input').value = '';
+  document.getElementById('video-selected').classList.remove('show');
+}
+
+document.addEventListener('input', function(e) {
+  var q = e.target.closest('.question');
+  if (q) {
+    var err = document.getElementById('err-' + q.id);
+    if (err) err.classList.remove('show');
+  }
+});
+
+document.addEventListener('change', function(e) {
+  var q = e.target.closest('.question');
+  if (q) {
+    var err = document.getElementById('err-' + q.id);
+    if (err) err.classList.remove('show');
+  }
+});
+
+updateUI();
+
+/* ======================================================
+   SCORING SYSTEM
+   Poor = 0 pts · Average = 1 pt · Strong = 2 pts
+   Final score = (sum / max_possible) × 10
+====================================================== */
+
+var SCORE_PTS = { 'Poor': 0, 'Average': 1, 'Strong': 2 };
+
+var SCORE_MAP = {
+  /* ── Part 2 ────────────────────────────────────── */
+  offline_revenue: {
+    'Less than ₹5 lakh': 'Poor',
+    '₹5L – ₹25L':        'Poor',
+    '₹25L – ₹50L':       'Average',
+    '₹50L – ₹1 crore':   'Average',
+    '₹1 Cr – ₹3 Cr':     'Strong',
+    '₹3 Cr – ₹5 Cr':     'Strong',
+    'More than ₹5 Cr':   'Strong'
+  },
+  online_revenue: {
+    'Below ₹50L/month':   'Poor',
+    '₹50L–₹75L/month':   'Average',
+    'Above ₹75L/month':   'Strong',
+    'Not Selling':        'Poor'
+  },
+  ad_spend: {
+    'Below ₹3L/month':        'Poor',
+    '₹3L–₹5L/month':          'Average',
+    '₹5L+/month':             'Strong',
+    'Currently not spending': 'Poor'
+  },
+  gross_margins: {
+    'Below 40%':     'Poor',
+    '40% – 50%':     'Average',
+    '50% – 60%':     'Strong',
+    'More than 60%': 'Strong'
+  },
+  /* ── Part 3: per-platform fields ──────────────── */
+  /* shared maps (matched by suffix) */
+  _presence: {
+    'Yes': 'Strong',
+    'No':  'Poor'
+  },
+  _fulfilment: {
+    'Platform Fulfilled': 'Strong',
+    'Self':               'Average'
+  },
+  _ratings: {
+    '4+ stars':      'Strong',
+    '3-4 stars':     'Average',
+    'Below 3 stars': 'Poor'
+  },
+  _skus_listed: {
+    '15 and above': 'Strong',
+    '10-15':        'Average',
+    '5-10':         'Poor'
+  },
+  _skus_ads: {
+    '100+':     'Strong',
+    '50-100':   'Strong',
+    '10-50':    'Average',
+    'Below 10': 'Poor'
+  },
+  _ad_perf_generic: {
+    '3 months data available, improvable': 'Strong',
+    'Running ads, poor ACoS (60%+)':       'Average',
+    'No Ad history / blind':               'Poor'
+  },
+  /* platform-specific overrides */
+  amazon_acct_health: {
+    'Healthy Account, Buy Box 80%+': 'Strong',
+    'Active, some flags/warnings':   'Average',
+    'Suspended/No Account':          'Poor'
+  },
+  flipkart_acct_health: {
+    'FAB seller, low cancellation/return rate': 'Strong',
+    'Active, average metrics':                  'Average',
+    'Penalties / poor seller metrics':          'Poor'
+  },
+  amazon_aplus: {
+    'Strong catalog, A+ content live':    'Strong',
+    'Decent titles, missing A+ / images': 'Average',
+    'Poor listings, thin catalog':        'Poor'
+  },
+  flipkart_aplus: {
+    'Brand Hub enrolled, rich content live': 'Strong',
+    'Decent, missing rich media':            'Average',
+    'Basic listings only':                   'Poor'
+  },
+  flipkart_ad_perf: {
+    'Active FKA campaigns, data accessible': 'Strong',
+    'Some spend, no tracking / data':        'Average',
+    'Zero Flipkart ad history':              'Poor'
+  }
+};
+
+/* Resolve category for a given field name + value */
+function getCategory(fieldName, value) {
+  // Direct field map
+  if (SCORE_MAP[fieldName] && SCORE_MAP[fieldName][value] !== undefined)
+    return SCORE_MAP[fieldName][value];
+  // Shared suffix maps
+  var SUFFIX_MAPS = ['_presence','_fulfilment','_ratings','_skus_listed','_skus_ads'];
+  for (var s = 0; s < SUFFIX_MAPS.length; s++) {
+    if (fieldName.endsWith(SUFFIX_MAPS[s]) && SCORE_MAP[SUFFIX_MAPS[s]] && SCORE_MAP[SUFFIX_MAPS[s]][value] !== undefined)
+      return SCORE_MAP[SUFFIX_MAPS[s]][value];
+  }
+  // Generic ad perf (all non-flipkart platforms)
+  if (fieldName.endsWith('_ad_perf') && fieldName !== 'flipkart_ad_perf' && SCORE_MAP['_ad_perf_generic'][value] !== undefined)
+    return SCORE_MAP['_ad_perf_generic'][value];
+  return null;
+}
+
+function calculateScore() {
+  var items = [];
+
+  function scoreField(label, name, value) {
+    if (!value) return;
+    var cat = getCategory(name, value);
+    if (!cat) return;
+    items.push({ label: label, name: name, value: value, cat: cat, pts: SCORE_PTS[cat] });
+  }
+
+  // Part 2
+  var r04 = document.querySelector('input[name="offline_revenue"]:checked');
+  scoreField('Offline Revenue',      'offline_revenue', r04 ? r04.value : null);
+  var r05 = document.querySelector('input[name="online_revenue"]:checked');
+  scoreField('Online Revenue',       'online_revenue',  r05 ? r05.value : null);
+  var r06 = document.querySelector('input[name="ad_spend"]:checked');
+  scoreField('Ad Spend Commitment',  'ad_spend',        r06 ? r06.value : null);
+  var r07 = document.querySelector('input[name="gross_margins"]:checked');
+  scoreField('Gross Margins',        'gross_margins',   r07 ? r07.value : null);
+
+  // Part 3 — all select dropdowns in the platform table
+  var P3_COLS = {
+    presence: 'Platform Presence', fulfilment: 'Fulfilment',
+    acct_health: 'Account Health', aplus: 'A+ Content',
+    ratings: 'Avg Ratings', skus_listed: 'Listed SKUs',
+    skus_ads: 'SKUs on Ads', ad_perf: 'Ad Performance'
+  };
+  ['amazon','flipkart','blinkit','zepto','instamart'].forEach(function(p) {
+    Object.keys(P3_COLS).forEach(function(col) {
+      var el = document.querySelector('select[name="' + p + '_' + col + '"]');
+      if (el && el.value) {
+        var pLabel = p.charAt(0).toUpperCase() + p.slice(1);
+        scoreField(pLabel + ' — ' + P3_COLS[col], p + '_' + col, el.value);
+      }
+    });
+  });
+
+  var total = items.reduce(function(s, i) { return s + i.pts; }, 0);
+  var max   = items.length * 2;
+  var score10 = max > 0 ? Math.round((total / max) * 100) / 10 : 0;
+
+  return { items: items, total: total, max: max, score10: score10 };
+}
+
+function renderScorePanel() {
+  var panel = document.getElementById('score-debug-panel');
+  if (!panel) return;
+  var r = calculateScore();
+
+  var PART2_KEYS = ['offline_revenue','online_revenue','ad_spend','gross_margins'];
+  var part2 = r.items.filter(function(i) { return PART2_KEYS.indexOf(i.name) !== -1; });
+  var part3 = r.items.filter(function(i) { return PART2_KEYS.indexOf(i.name) === -1; });
+
+  function badge(cat) {
+    var c = { Poor: '#E53935', Average: '#F59E0B', Strong: '#22C55E' }[cat];
+    return '<span style="display:inline-block;padding:2px 9px;border-radius:4px;font-size:11px;font-weight:700;letter-spacing:0.06em;background:' + c + '20;color:' + c + ';border:1px solid ' + c + '50">' + cat + '</span>';
+  }
+
+  function rows(arr) {
+    return arr.map(function(i) {
+      return '<tr>' +
+        '<td style="padding:8px 12px;font-size:13px;color:#3D3D3D;border-bottom:1px solid #F0F0ED">' + i.label + '</td>' +
+        '<td style="padding:8px 12px;font-size:12px;color:#888;border-bottom:1px solid #F0F0ED">' + i.value + '</td>' +
+        '<td style="padding:8px 12px;border-bottom:1px solid #F0F0ED;text-align:center">' + badge(i.cat) + '</td>' +
+        '<td style="padding:8px 12px;font-size:13px;font-weight:700;color:#1A1A1A;border-bottom:1px solid #F0F0ED;text-align:right">' + i.pts + '<span style="font-weight:400;color:#aaa">/2</span></td>' +
+      '</tr>';
+    }).join('');
+  }
+
+  var pct  = Math.round(r.score10 * 10);
+  var scol = pct < 40 ? '#E53935' : pct < 70 ? '#F59E0B' : '#22C55E';
+  var slabel = pct < 40 ? 'Poor' : pct < 70 ? 'Average' : 'Strong';
+
+  function section(title, arr) {
+    if (!arr.length) return '';
+    return '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:#999;margin:18px 0 8px">' + title + '</div>' +
+      '<table style="width:100%;border-collapse:collapse;border:1px solid #E8E8E0;border-radius:8px;overflow:hidden">' +
+        '<thead><tr style="background:#F5F5F0">' +
+          '<th style="padding:7px 12px;font-size:11px;text-align:left;color:#888;font-weight:600">Question</th>' +
+          '<th style="padding:7px 12px;font-size:11px;text-align:left;color:#888;font-weight:600">Answer</th>' +
+          '<th style="padding:7px 12px;font-size:11px;text-align:center;color:#888;font-weight:600">Category</th>' +
+          '<th style="padding:7px 12px;font-size:11px;text-align:right;color:#888;font-weight:600">Score</th>' +
+        '</tr></thead>' +
+        '<tbody>' + rows(arr) + '</tbody>' +
+      '</table>';
+  }
+
+  panel.innerHTML =
+    '<div style="background:#1A1A1A;color:#fff;padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-radius:12px 12px 0 0">' +
+      '<span style="font-size:12px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase">⚙ Score Debug Panel</span>' +
+      '<span style="font-size:11px;opacity:0.45;font-style:italic">Admin only — remove before going live</span>' +
+    '</div>' +
+    '<div style="padding:20px 24px">' +
+      '<div style="display:flex;align-items:center;gap:24px;padding:18px 20px;background:#F8F8F5;border-radius:10px;border:1px solid #E8E8E0;margin-bottom:4px">' +
+        '<div style="text-align:center;min-width:80px">' +
+          '<div style="font-size:52px;font-weight:800;color:' + scol + ';line-height:1;font-family:var(--sans)">' + r.score10 + '</div>' +
+          '<div style="font-size:12px;color:#888;margin-top:2px">/ 10</div>' +
+        '</div>' +
+        '<div style="flex:1">' +
+          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+            '<span style="font-size:13px;font-weight:600;color:#1A1A1A">Overall Rating: ' + badge(slabel) + '</span>' +
+            '<span style="font-size:12px;color:#888">' + r.total + ' / ' + r.max + ' raw pts &nbsp;·&nbsp; ' + r.items.length + ' fields</span>' +
+          '</div>' +
+          '<div style="background:#E8E8E0;border-radius:999px;height:8px;overflow:hidden">' +
+            '<div style="height:100%;width:' + pct + '%;background:' + scol + ';border-radius:999px"></div>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      section('Part 2 — Revenue & Business Fundamentals', part2) +
+      section('Part 3 — Platform Audit', part3) +
+    '</div>';
+}
+</script>
+</body>
+</html>

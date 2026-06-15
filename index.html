@@ -1607,6 +1607,7 @@ function validatePart1() {
     { id: 'url_blinkit',  pattern: /blinkit\.com/i,        label: 'Blinkit URL (blinkit.com)' },
     { id: 'url_zepto',    pattern: /zeptonow\.com/i,       label: 'Zepto URL (zeptonow.com)' },
     { id: 'url_instamart',pattern: /swiggy\.com/i,         label: 'Instamart URL (swiggy.com)' },
+    { id: 'q2_website',   pattern: /^(https?:\/\/)?[^\s]+\.[a-z]{2,}/i, label: 'valid website (e.g. yourbrand.com)' },
     { id: 'url_other',    pattern: /^https?:\/\/.{3,}/i,   label: 'valid URL starting with http(s)://' },
   ];
   urlRules.forEach(function(rule) {
@@ -1872,6 +1873,7 @@ document.addEventListener('change', function(e) {
     { id: 'url_blinkit',   pattern: /blinkit\.com/i,      label: 'Blinkit URL (blinkit.com)' },
     { id: 'url_zepto',     pattern: /zeptonow\.com/i,     label: 'Zepto URL (zeptonow.com)' },
     { id: 'url_instamart', pattern: /swiggy\.com/i,       label: 'Instamart URL (swiggy.com)' },
+    { id: 'q2_website',    pattern: /^(https?:\/\/)?[^\s]+\.[a-z]{2,}/i, label: 'valid website (e.g. yourbrand.com)' },
     { id: 'url_other',     pattern: /^https?:\/\/.{3,}/i, label: 'valid URL starting with http(s)://' },
   ];
   urlRulesLive.forEach(function(rule) {

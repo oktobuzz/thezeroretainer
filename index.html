@@ -170,8 +170,9 @@ strong { font-weight: 600; color: var(--ink); }
   50%       { opacity: 0.5; transform: scale(0.85); }
 }
 .intro-subtitle {
-  font-size: 17px;
-  line-height: 1.65;
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.7;
   color: var(--body);
   margin-bottom: 20px;
   max-width: 560px;
@@ -858,7 +859,7 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
 
   <p class="intro-subtitle">We read every answer ourselves. This isn't a lead-gen exercise: the quality of your answers (not just the numbers) decides who gets a call.</p>
 
-  <p style="font-size:14px;color:var(--muted);margin-bottom:36px;">
+  <p style="font-family:var(--sans);font-size:14px;color:var(--muted);margin-bottom:36px;">
     And the call will be with our founders <strong style="color:var(--ink)">Hemal and Neha.</strong><br>
     So be specific, and be honest. If your situation is messy, say so. We'd rather work with a founder who's clear about what's broken than one who pretends everything is fine.
   </p>
@@ -954,7 +955,7 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
     <div class="field-row">
       <div class="field-group">
         <label class="field-label" for="q1_mobile">Mobile no.</label>
-        <input type="tel" id="q1_mobile" name="mobile" placeholder="+91 98765 43210" />
+        <input type="tel" id="q1_mobile" name="mobile" placeholder="+91 98765 43210" inputmode="numeric" pattern="[0-9+\s]*" />
       </div>
       <div class="field-group">
         <label class="field-label" for="q1_email">E-mail</label>
@@ -1496,19 +1497,85 @@ function showErr(id) {
 function validatePart1() {
   clearAllErrors();
   var ok = true;
+
+  // ── Q1 basic presence ──
   var q1Missing = ['q1_name', 'q1_role', 'q1_mobile', 'q1_email'].some(function(id) {
     return !document.getElementById(id).value.trim();
   });
   if (q1Missing) { showErr('q1'); ok = false; }
+
+  if (ok || !q1Missing) {
+    // ── Mobile: exactly 10 digits ──
+    var mobile = document.getElementById('q1_mobile').value.trim().replace(/\s+/g, '');
+    if (mobile && !/^\+?[0-9]{10,13}$/.test(mobile)) {
+      showFieldErr('q1_mobile', 'Please enter a valid 10-digit mobile number.');
+      ok = false;
+    }
+
+    // ── Email format ──
+    var email = document.getElementById('q1_email').value.trim();
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showFieldErr('q1_email', 'Please enter a valid email address.');
+      ok = false;
+    }
+  }
+
+  // ── Q2 brand + URLs ──
   var brandName = document.getElementById('q2_brand').value.trim();
   var anyUrl = ['url_amazon', 'url_flipkart', 'url_blinkit', 'url_zepto', 'url_instamart', 'url_other', 'q2_website'].some(function(id) {
     var el = document.getElementById(id);
     return el && el.value.trim();
   });
   if (!brandName || !anyUrl) { showErr('q2'); ok = false; }
+
+  // ── URL format + platform validation ──
+  var urlRules = [
+    { id: 'url_amazon',   pattern: /amazon\.(in|com)/i,    label: 'Amazon URL (amazon.in or amazon.com)' },
+    { id: 'url_flipkart', pattern: /flipkart\.com/i,       label: 'Flipkart URL (flipkart.com)' },
+    { id: 'url_blinkit',  pattern: /blinkit\.com/i,        label: 'Blinkit URL (blinkit.com)' },
+    { id: 'url_zepto',    pattern: /zeptonow\.com/i,       label: 'Zepto URL (zeptonow.com)' },
+    { id: 'url_instamart',pattern: /swiggy\.com/i,         label: 'Instamart URL (swiggy.com)' },
+    { id: 'q2_website',   pattern: /^https?:\/\/.{3,}/i,   label: 'valid website URL starting with http(s)://' },
+    { id: 'url_other',    pattern: /^https?:\/\/.{3,}/i,   label: 'valid URL starting with http(s)://' },
+  ];
+  urlRules.forEach(function(rule) {
+    var el = document.getElementById(rule.id);
+    if (!el) return;
+    var val = el.value.trim();
+    if (val && !rule.pattern.test(val)) {
+      showFieldErr(rule.id, 'Please enter a ' + rule.label + '.');
+      ok = false;
+    }
+  });
+
   if (!document.getElementById('q3_text').value.trim()) { showErr('q3'); ok = false; }
   return ok;
 }
+
+// Show inline error under a specific input
+function showFieldErr(inputId, msg) {
+  var input = document.getElementById(inputId);
+  if (!input) return;
+  var existing = document.getElementById('inline-err-' + inputId);
+  if (!existing) {
+    var span = document.createElement('span');
+    span.id = 'inline-err-' + inputId;
+    span.style.cssText = 'display:block;font-size:12px;color:#CC1F26;margin-top:4px;font-family:var(--sans);';
+    input.parentNode.insertBefore(span, input.nextSibling);
+    existing = span;
+  }
+  existing.textContent = msg;
+  input.style.borderColor = '#CC1F26';
+  input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+// Clear inline errors on next attempt
+var _origClearAllErrors = clearAllErrors;
+clearAllErrors = function() {
+  _origClearAllErrors();
+  document.querySelectorAll('[id^="inline-err-"]').forEach(function(el) { el.textContent = ''; });
+  document.querySelectorAll('#page-part1 input').forEach(function(el) { el.style.borderColor = ''; });
+};
 
 function validatePart1b() {
   clearAllErrors();

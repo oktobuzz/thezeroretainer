@@ -105,7 +105,7 @@ function buildThankYouEmail(name) {
               <hr style="border:none;border-top:1px solid #E8E8E0;margin:0 0 28px;" />
 
               <!-- What happens next -->
-              <p style="margin:0 0 20px;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#888880;">What happens if you're selected</p>
+              <p style="margin:0 0 20px;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:#888880;">What happens next</p>
 
               <!-- Step 1 -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
@@ -232,10 +232,64 @@ app.post('/submit', async (req, res) => {
       ${breakdown.map(line => `<tr><td style="padding:5px 12px 5px 24px;font-size:12px;color:#777;border-bottom:1px solid #f5f5f5" colspan="2">${line}</td></tr>`).join('')}
       <tr><td colspan="2" style="padding:16px 12px 6px;font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee">Form Answers</td></tr>
     `;
+    const FIELD_LABELS = {
+      name:              'Name',
+      designation:       'Designation',
+      mobile:            'Mobile Number',
+      email:             'Email',
+      brand_name:        'Brand Name',
+      url_website:       'Website URL',
+      url_amazon:        'Amazon URL',
+      url_flipkart:      'Flipkart URL',
+      url_blinkit:       'Blinkit URL',
+      url_zepto:         'Zepto URL',
+      url_instamart:     'Instamart URL',
+      url_other:         'Other Platform URL',
+      one_liner:         'What they sell & who buys',
+      offline_revenue:   'Monthly Offline Revenue',
+      online_revenue:    'Monthly Online Revenue',
+      ad_spend:          'Ad Spend Commitment',
+      gross_margins:     'Overall Gross Margins',
+      q8:                'Brand Vision',
+      q9:                'Biggest Pain Point',
+      commit:            'Commitments',
+      q12:               'Anything Else',
+      elevator:          'Elevator Pitch',
+      // Platform table fields
+      amazon_fulfilment:    'Amazon — Fulfilment',
+      amazon_acct_health:   'Amazon — Account Health',
+      amazon_aplus:         'Amazon — A+ Content',
+      amazon_ratings:       'Amazon — Avg Ratings',
+      amazon_skus_listed:   'Amazon — Listed SKUs',
+      amazon_skus_ads:      'Amazon — SKUs on Ads',
+      amazon_ad_perf:       'Amazon — Ad Performance',
+      flipkart_fulfilment:  'Flipkart — Fulfilment',
+      flipkart_acct_health: 'Flipkart — Account Health',
+      flipkart_aplus:       'Flipkart — A+ Content',
+      flipkart_ratings:     'Flipkart — Avg Ratings',
+      flipkart_skus_listed: 'Flipkart — Listed SKUs',
+      flipkart_skus_ads:    'Flipkart — SKUs on Ads',
+      flipkart_ad_perf:     'Flipkart — Ad Performance',
+      blinkit_ratings:      'Blinkit — Avg Ratings',
+      blinkit_skus_listed:  'Blinkit — Listed SKUs',
+      blinkit_skus_ads:     'Blinkit — SKUs on Ads',
+      blinkit_ad_perf:      'Blinkit — Ad Performance',
+      zepto_ratings:        'Zepto — Avg Ratings',
+      zepto_skus_listed:    'Zepto — Listed SKUs',
+      zepto_skus_ads:       'Zepto — SKUs on Ads',
+      zepto_ad_perf:        'Zepto — Ad Performance',
+      instamart_ratings:    'Instamart — Avg Ratings',
+      instamart_skus_listed:'Instamart — Listed SKUs',
+      instamart_skus_ads:   'Instamart — SKUs on Ads',
+      instamart_ad_perf:    'Instamart — Ad Performance',
+    };
     const skipKeys = new Set(['_score','_scoreLabel','_scoreBreakdown']);
     const rows = Object.entries(data)
       .filter(([k]) => !skipKeys.has(k))
-      .map(([k, v]) => `<tr><td style="padding:6px 12px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap">${k}</td><td style="padding:6px 12px;border-bottom:1px solid #eee">${Array.isArray(v) ? v.join(', ') : v}</td></tr>`)
+      .map(([k, v]) => {
+        const label = FIELD_LABELS[k] || k;
+        return `<tr><td style="padding:6px 12px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap">${label}</td><td style="padding:6px 12px;border-bottom:1px solid #eee">${Array.isArray(v) ? v.join(', ') : v}</td></tr>`;
+      })
       .join('');
     return {
       subject: `New application: ${data.name || 'Unknown'} — Score: ${score}/10 (${scoreLabel})`,

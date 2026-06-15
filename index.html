@@ -173,7 +173,7 @@ strong { font-weight: 600; color: var(--ink); }
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.7;
-  color: var(--body);
+  color: var(--ink);
   margin-bottom: 20px;
   max-width: 560px;
 }
@@ -211,7 +211,7 @@ strong { font-weight: 600; color: var(--ink); }
 }
 .model-subtext {
   font-size: 14px;
-  color: var(--muted);
+  color: var(--body);
   margin: 0;
   line-height: 1.6;
 }
@@ -267,11 +267,11 @@ strong { font-weight: 600; color: var(--ink); }
 .model-card-dark .model-card-rate { color: var(--ink); }
 .model-card-desc {
   font-size: 12.5px;
-  color: var(--muted);
+  color: var(--body);
   line-height: 1.6;
 }
 .model-card-accent .model-card-desc { color: var(--body); }
-.model-card-dark .model-card-desc { color: var(--muted); }
+.model-card-dark .model-card-desc { color: var(--body); }
 
 /* Math breakdown */
 .model-math {
@@ -859,8 +859,8 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
 
   <p class="intro-subtitle">We read every answer ourselves. This isn't a lead-gen exercise: the quality of your answers (not just the numbers) decides who gets a call.</p>
 
-  <p style="font-family:var(--sans);font-size:14px;color:var(--muted);margin-bottom:36px;">
-    And the call will be with our founders <strong style="color:var(--ink)">Hemal and Neha.</strong><br>
+  <p style="font-family:var(--sans);font-size:14px;color:var(--ink);margin-bottom:36px;">
+    And the call will be with our founders <strong>Hemal and Neha.</strong><br>
     So be specific, and be honest. If your situation is messy, say so. We'd rather work with a founder who's clear about what's broken than one who pretends everything is fine.
   </p>
 
@@ -889,24 +889,24 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
     <div class="model-math">
       <div class="model-math-label">The maths, in plain numbers</div>
       <div class="model-math-example">
-        Say your baseline is <strong>&#8377;10 lakh/month</strong> and we grow you to <strong>&#8377;25 lakh</strong>:
+        Say your <strong>online baseline</strong> is <strong>&#8377;5 lakh/month</strong> and we grow you to <strong>&#8377;12.5 lakh</strong>:
       </div>
       <div class="model-math-rows">
         <div class="model-math-row">
-          <span class="math-row-label">Base fee &nbsp;<em>2.5% &times; &#8377;10L</em></span>
-          <span class="math-row-value">&#8377;25,000</span>
+          <span class="math-row-label">Base fee &nbsp;<em>2.5% &times; &#8377;5L</em></span>
+          <span class="math-row-value">&#8377;12,500</span>
         </div>
         <div class="model-math-row">
-          <span class="math-row-label">Growth to 2&times; &nbsp;<em>20% &times; &#8377;10L</em></span>
-          <span class="math-row-value">&#8377;2,00,000</span>
+          <span class="math-row-label">Growth to 2&times; &nbsp;<em>20% &times; &#8377;5L</em></span>
+          <span class="math-row-value">&#8377;1,00,000</span>
         </div>
         <div class="model-math-row">
-          <span class="math-row-label">Beyond 2&times; &nbsp;<em>25% &times; &#8377;5L</em></span>
-          <span class="math-row-value">&#8377;1,25,000</span>
+          <span class="math-row-label">Beyond 2&times; &nbsp;<em>25% &times; &#8377;2.5L</em></span>
+          <span class="math-row-value">&#8377;62,500</span>
         </div>
         <div class="model-math-row model-math-total">
           <span class="math-row-label">OktoBuzz total &nbsp;<em>on a brand we've 2.5&times;'d</em></span>
-          <span class="math-row-value">&#8377;3.5L/mo</span>
+          <span class="math-row-value">&#8377;1.75L/mo</span>
         </div>
       </div>
     </div>
@@ -1560,7 +1560,7 @@ function showFieldErr(inputId, msg) {
   if (!existing) {
     var span = document.createElement('span');
     span.id = 'inline-err-' + inputId;
-    span.style.cssText = 'display:block;font-size:12px;color:#CC1F26;margin-top:4px;font-family:var(--sans);';
+    span.style.cssText = 'display:block;font-size:12px;color:#CC1F26;margin-top:4px;font-family:var(--sans);white-space:nowrap;';
     input.parentNode.insertBefore(span, input.nextSibling);
     existing = span;
   }

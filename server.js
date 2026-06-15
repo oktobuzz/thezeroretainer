@@ -98,7 +98,7 @@ function buildThankYouEmail(name) {
               </p>
 
               <p style="font-size:15px;line-height:1.7;margin:0 0 28px;color:#3D3D3D;">
-                If this engagement isn't right for your brand at this stage, we'll still write back, and we'll tell you honestly what we'd recommend instead. That part isn't a courtesy line. It's just how we work.
+                If not, we'll let you know once we've completed our review.
               </p>
 
               <!-- Divider -->

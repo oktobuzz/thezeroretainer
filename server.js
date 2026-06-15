@@ -128,7 +128,7 @@ function buildThankYouEmail(name) {
                   </td>
                   <td valign="top" style="padding-left:8px;">
                     <p style="margin:0 0 4px;font-size:14px;font-weight:700;color:#1A1A1A;">Discovery call <span style="display:inline-block;background:#F0F0EA;border-radius:4px;font-size:11px;font-weight:600;color:#555550;padding:2px 8px;letter-spacing:0.04em;">60 MINUTES</span></p>
-                    <p style="margin:0;font-size:13px;line-height:1.6;color:#555550;">We dig into your numbers, look at your listings together, validate the fit, and walk you through exactly how the model works — including how your rate tapers as you scale.</p>
+                    <p style="margin:0;font-size:13px;line-height:1.6;color:#555550;">We dig into your numbers, look at your listings together, validate the fit, and walk you through exactly how the model works.</p>
                   </td>
                 </tr>
               </table>

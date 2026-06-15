@@ -254,7 +254,7 @@ app.post('/submit', async (req, res) => {
   try {
     const sends = [
       resend.emails.send({
-        from: 'The Zero Retainer <onboarding@resend.dev>',
+        from: 'The Zero Retainer <growth@oktobuzz.com>',
         to: [applicantEmail],
         subject,
         html,
@@ -265,7 +265,7 @@ app.post('/submit', async (req, res) => {
       const admin = buildAdminEmail();
       sends.push(
         resend.emails.send({
-          from: 'Zero Retainer Form <onboarding@resend.dev>',
+          from: 'Zero Retainer Form <growth@oktobuzz.com>',
           to: [process.env.NOTIFY_EMAIL],
           subject: admin.subject,
           html: admin.html,

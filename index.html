@@ -4,6 +4,32 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>The Zero Retainer — OktoBuzz · 2026</title>
+
+<!-- SEO -->
+<meta name="description" content="Apply to The Zero Retainer — OktoBuzz's performance model where we grow your brand online and only earn when you do. No retainer. Pure performance." />
+
+<!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
+<meta property="og:type"        content="website" />
+<meta property="og:url"         content="https://thezeroretainer.oktobuzz.com/" />
+<meta property="og:title"       content="The Zero Retainer — OktoBuzz" />
+<meta property="og:description" content="We grow your brand online and only earn when you do. No retainer. Pure performance. Apply now." />
+<meta property="og:image"       content="https://oktobuzz.com/tzr-logo-cropped.png" />
+<meta property="og:image:width"  content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:site_name"   content="The Zero Retainer" />
+
+<!-- Twitter / X Card -->
+<meta name="twitter:card"        content="summary_large_image" />
+<meta name="twitter:title"       content="The Zero Retainer — OktoBuzz" />
+<meta name="twitter:description" content="We grow your brand online and only earn when you do. No retainer. Pure performance. Apply now." />
+<meta name="twitter:image"       content="https://oktobuzz.com/tzr-logo-cropped.png" />
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-54TZGZNC');</script>
+<!-- End Google Tag Manager -->
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSWLDKRB3J"></script>
 <script>
@@ -905,6 +931,10 @@ td input[type="number"]::-webkit-outer-spin-button { opacity: 0.5; }
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-54TZGZNC"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <!-- ========= HEADER ========= -->
 <header>
@@ -1571,17 +1601,30 @@ function goTo(pageId) {
   // Build table AFTER page is shown so DOM elements exist
   if (pageId === 'part2') rebuildTable();
 
-  // ── GA4 form step tracking ──────────────────────────
+  // ── Form step tracking (GTM dataLayer + direct GA4) ─
+  var stepNumbers = { intro:0, part1:1, part1b:2, part2:3, part3:4, part4:5, thanks:6 };
+  var stepNum = stepNumbers[pageId] !== undefined ? stepNumbers[pageId] : pageId;
+  var stepName = PAGE_LABELS[pageId] || pageId;
+
+  // Push to dataLayer — GTM picks this up as a Custom Event trigger
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event:       'form_step_view',
+    step_number: stepNum,
+    step_name:   stepName,
+    form_name:   'Zero Retainer Application',
+    page_path:   '/apply#' + pageId,
+  });
+
+  // Direct GA4 via gtag (works independently of GTM)
   if (typeof gtag === 'function') {
-    var steps = { intro:0, part1:1, part1b:2, part2:3, part3:4, part4:5, thanks:6 };
     gtag('event', 'form_step_view', {
-      step_number: steps[pageId] !== undefined ? steps[pageId] : pageId,
-      step_name:   PAGE_LABELS[pageId] || pageId,
+      step_number: stepNum,
+      step_name:   stepName,
       form_name:   'Zero Retainer Application',
     });
-    // Also send as a virtual pageview so it shows in GA4 Pages report
     gtag('event', 'page_view', {
-      page_title:    PAGE_LABELS[pageId] || pageId,
+      page_title:    stepName,
       page_location: window.location.href,
       page_path:     '/apply#' + pageId,
     });
@@ -1844,6 +1887,27 @@ async function submitForm() {
     });
     var json = await res.json();
     if (json.ok) {
+      // ── Submission tracking (GTM dataLayer + direct GA4) ─
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event:     'form_submission',
+        form_name: 'Zero Retainer Application',
+        event_label: 'Application Submitted',
+      });
+      window.dataLayer.push({
+        event:     'generate_lead',
+        form_name: 'Zero Retainer Application',
+      });
+
+      if (typeof gtag === 'function') {
+        gtag('event', 'form_submission', {
+          form_name:   'Zero Retainer Application',
+          event_label: 'Application Submitted',
+        });
+        gtag('event', 'generate_lead', {
+          form_name: 'Zero Retainer Application',
+        });
+      }
       goTo('thanks');
       // Save submission + score to DB (non-blocking — failure doesn't affect user)
       try {

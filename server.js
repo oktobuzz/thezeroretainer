@@ -382,6 +382,7 @@ app.get('/api/dashboard', async (req, res) => {
     const platforms = { Amazon: 0, Flipkart: 0, Blinkit: 0, Zepto: 0, Instamart: 0 };
     // Revenue distribution
     const onlineRevDist = {};
+    const offlineRevDist = {};
 
     const applications = rows.map(r => {
       let fd = {};
@@ -398,6 +399,9 @@ app.get('/api/dashboard', async (req, res) => {
 
       const rev = fd.online_revenue || '';
       if (rev) onlineRevDist[rev] = (onlineRevDist[rev] || 0) + 1;
+
+      const offrev = fd.offline_revenue || '';
+      if (offrev) offlineRevDist[offrev] = (offlineRevDist[offrev] || 0) + 1;
 
       return {
         id:           r.id,
@@ -432,6 +436,7 @@ app.get('/api/dashboard', async (req, res) => {
       scoreDist,
       platforms,
       onlineRevDist,
+      offlineRevDist,
       applications,
       top10: applications.slice(0, 10),
     });

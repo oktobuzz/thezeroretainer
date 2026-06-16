@@ -12,6 +12,23 @@
   gtag('js', new Date());
   gtag('config', 'G-YSWLDKRB3J');
 </script>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '582329611412786');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=582329611412786&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
 <link rel="icon" type="image/png" href="circle.png?v=2" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1532,6 +1549,16 @@ function rebuildTable() {
 ====================================================== */
 var currentPage = 'intro';
 
+var PAGE_LABELS = {
+  intro:  'Step 0 – Intro',
+  part1:  'Step 1 – Brand URLs',
+  part1b: 'Step 2 – Platform Details',
+  part2:  'Step 3 – About the Brand',
+  part3:  'Step 4 – Deciding Questions',
+  part4:  'Step 5 – Fine Print',
+  thanks: 'Step 6 – Submitted',
+};
+
 function goTo(pageId) {
   document.querySelectorAll('.page').forEach(function(p) {
     p.classList.remove('active');
@@ -1543,6 +1570,22 @@ function goTo(pageId) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
   // Build table AFTER page is shown so DOM elements exist
   if (pageId === 'part2') rebuildTable();
+
+  // ── GA4 form step tracking ──────────────────────────
+  if (typeof gtag === 'function') {
+    var steps = { intro:0, part1:1, part1b:2, part2:3, part3:4, part4:5, thanks:6 };
+    gtag('event', 'form_step_view', {
+      step_number: steps[pageId] !== undefined ? steps[pageId] : pageId,
+      step_name:   PAGE_LABELS[pageId] || pageId,
+      form_name:   'Zero Retainer Application',
+    });
+    // Also send as a virtual pageview so it shows in GA4 Pages report
+    gtag('event', 'page_view', {
+      page_title:    PAGE_LABELS[pageId] || pageId,
+      page_location: window.location.href,
+      page_path:     '/apply#' + pageId,
+    });
+  }
 }
 
 function updateUI() {

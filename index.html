@@ -1156,7 +1156,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="nav-row">
     <button class="btn btn-ghost" onclick="goTo('intro')"><span class="arr">←</span> Back</button>
-    <button class="btn btn-primary" onclick="validateAndNext('part1','part1b')">Continue <span class="arr">→</span></button>
+    <button class="btn btn-primary" id="continue-part1" data-step="Step 1 – Brand URLs" onclick="validateAndNext('part1','part1b')">Continue <span class="arr">→</span></button>
   </div>
   <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
 </section>
@@ -1229,7 +1229,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="nav-row">
     <button class="btn btn-ghost" onclick="goTo('part1')"><span class="arr">←</span> Back</button>
-    <button class="btn btn-primary" onclick="validateAndNext('part1b','part2')">Continue <span class="arr">→</span></button>
+    <button class="btn btn-primary" id="continue-part1b" data-step="Step 2 – Platform Details" onclick="validateAndNext('part1b','part2')">Continue <span class="arr">→</span></button>
   </div>
   <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
 </section>
@@ -1271,7 +1271,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="nav-row">
     <button class="btn btn-ghost" onclick="goTo('part1b')"><span class="arr">←</span> Back</button>
-    <button class="btn btn-primary" onclick="validateAndNext('part2','part3')">Continue <span class="arr">→</span></button>
+    <button class="btn btn-primary" id="continue-part2" data-step="Step 3 – About the Brand" onclick="validateAndNext('part2','part3')">Continue <span class="arr">→</span></button>
   </div>
   <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
 </section>
@@ -1312,7 +1312,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   <div class="nav-row">
     <button class="btn btn-ghost" onclick="goTo('part2')"><span class="arr">←</span> Back</button>
-    <button class="btn btn-primary" onclick="validateAndNext('part3','part4')">Continue <span class="arr">→</span></button>
+    <button class="btn btn-primary" id="continue-part3" data-step="Step 4 – Deciding Questions" onclick="validateAndNext('part3','part4')">Continue <span class="arr">→</span></button>
   </div>
   <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
 </section>
@@ -1376,7 +1376,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="nav-row" style="flex-direction:column;align-items:stretch;gap:16px;">
     <div style="display:flex;align-items:center;justify-content:space-between;">
       <button class="btn btn-ghost" onclick="goTo('part3')"><span class="arr">←</span> Back</button>
-      <button class="btn btn-primary" onclick="submitForm()">Submit application <span class="arr">→</span></button>
+      <button class="btn btn-primary" id="btn-submit" data-step="Step 6 – Submitted" onclick="submitForm()">Submit application <span class="arr">→</span></button>
     </div>
   </div>
   <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>

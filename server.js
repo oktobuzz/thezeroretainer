@@ -351,6 +351,96 @@ app.post('/save-to-db', async (req, res) => {
   }
 });
 
+// ─── GET /api/dashboard — password-protected metrics endpoint ────────────────
+app.get('/api/dashboard', async (req, res) => {
+  const pass = req.headers['x-dashboard-password'] || req.query.password;
+  const DASHBOARD_PASSWORD = process.env.DASHBOARD_PASSWORD || 'tzr2024';
+  if (pass !== DASHBOARD_PASSWORD) {
+    return res.status(401).json({ ok: false, error: 'Unauthorized' });
+  }
+
+  try {
+    const conn = await pool.getConnection();
+
+    // All applications ordered by score desc
+    const [rows] = await conn.execute(
+      `SELECT id, submitted_at, name, email, brand, score, score_label, full_data
+       FROM applications ORDER BY score DESC`
+    );
+    conn.release();
+
+    const total = rows.length;
+
+    // Score distribution
+    const scoreDist = { Strong: 0, Average: 0, Poor: 0, Unknown: 0 };
+    rows.forEach(r => {
+      const lbl = r.score_label || 'Unknown';
+      scoreDist[lbl] = (scoreDist[lbl] || 0) + 1;
+    });
+
+    // Platform presence
+    const platforms = { Amazon: 0, Flipkart: 0, Blinkit: 0, Zepto: 0, Instamart: 0 };
+    // Revenue distribution
+    const onlineRevDist = {};
+
+    const applications = rows.map(r => {
+      let fd = {};
+      try {
+        const raw = typeof r.full_data === 'string' ? JSON.parse(r.full_data) : (r.full_data || {});
+        fd = raw.formData || raw;
+      } catch(e) {}
+
+      if (fd.url_amazon)    platforms.Amazon++;
+      if (fd.url_flipkart)  platforms.Flipkart++;
+      if (fd.url_blinkit)   platforms.Blinkit++;
+      if (fd.url_zepto)     platforms.Zepto++;
+      if (fd.url_instamart) platforms.Instamart++;
+
+      const rev = fd.online_revenue || '';
+      if (rev) onlineRevDist[rev] = (onlineRevDist[rev] || 0) + 1;
+
+      return {
+        id:           r.id,
+        submitted_at: r.submitted_at,
+        name:         r.name || fd.name || '',
+        email:        r.email || fd.email || '',
+        brand:        r.brand || fd.brand_name || '',
+        score:        r.score,
+        score_label:  r.score_label,
+        online_revenue:  fd.online_revenue  || '',
+        offline_revenue: fd.offline_revenue || '',
+        designation:  fd.designation || '',
+        one_liner:    fd.one_liner || '',
+        platforms_present: [
+          fd.url_amazon    ? 'Amazon'    : null,
+          fd.url_flipkart  ? 'Flipkart'  : null,
+          fd.url_blinkit   ? 'Blinkit'   : null,
+          fd.url_zepto     ? 'Zepto'     : null,
+          fd.url_instamart ? 'Instamart' : null,
+        ].filter(Boolean),
+      };
+    });
+
+    const avgScore = total > 0
+      ? (rows.reduce((s, r) => s + (parseFloat(r.score) || 0), 0) / total).toFixed(1)
+      : 0;
+
+    res.json({
+      ok: true,
+      total,
+      avgScore,
+      scoreDist,
+      platforms,
+      onlineRevDist,
+      applications,
+      top10: applications.slice(0, 10),
+    });
+  } catch (err) {
+    console.error('Dashboard error:', err.message);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 // ─── Start ────────────────────────────────────────────────────────────────────
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

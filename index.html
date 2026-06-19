@@ -1883,7 +1883,7 @@ function validateAndNext(fromPage, toPage) {
   };
   var fn = validators[fromPage];
   if (fn && !fn()) return;
-  if (fromPage === 'part1b') sendEarlyLead();
+  if (fromPage === 'part1') sendEarlyLead();
   goTo(toPage);
 }
 

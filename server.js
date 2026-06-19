@@ -260,6 +260,7 @@ app.post('/early-lead', async (req, res) => {
     await resend.emails.send({
       from: 'Zero Retainer Form <growth@oktobuzz.com>',
       to: [notifyEmail],
+      cc: ['leonard@oktobuzz.com', 'hemal@oktobuzz.com'],
       subject,
       html,
     });

@@ -204,6 +204,72 @@ function buildThankYouEmail(name) {
 // ─── GET /ping — quick health check ──────────────────────────────────────────
 app.get('/ping', (req, res) => res.json({ ok: true, message: 'Server is running' }));
 
+// ─── POST /early-lead — partial lead capture after Part 1b ───────────────────
+app.post('/early-lead', async (req, res) => {
+  const data = req.body;
+  const notifyEmail = process.env.NOTIFY_EMAIL || 'growth@oktobuzz.com';
+
+  function buildEarlyLeadEmail() {
+    const name     = data.name      || 'Unknown';
+    const brand    = data.brand_name || 'Unknown Brand';
+    const email    = data.email     || '—';
+    const mobile   = data.mobile    || '—';
+    const role     = data.designation || '—';
+    const website  = data.url_website || '';
+    const oneLiner = data.one_liner  || '—';
+
+    const platformLinks = [
+      data.url_amazon    ? `<li><strong>Amazon:</strong> <a href="${data.url_amazon}">${data.url_amazon}</a></li>`    : '',
+      data.url_flipkart  ? `<li><strong>Flipkart:</strong> <a href="${data.url_flipkart}">${data.url_flipkart}</a></li>`  : '',
+      data.url_blinkit   ? `<li><strong>Blinkit:</strong> <a href="${data.url_blinkit}">${data.url_blinkit}</a></li>`   : '',
+      data.url_zepto     ? `<li><strong>Zepto:</strong> <a href="${data.url_zepto}">${data.url_zepto}</a></li>`     : '',
+      data.url_instamart ? `<li><strong>Instamart:</strong> <a href="${data.url_instamart}">${data.url_instamart}</a></li>` : '',
+      data.url_other     ? `<li><strong>Other:</strong> <a href="${data.url_other}">${data.url_other}</a></li>`     : '',
+    ].filter(Boolean).join('');
+
+    const row = (label, value) =>
+      `<tr><td style="padding:7px 14px;font-weight:600;color:#555;border-bottom:1px solid #eee;white-space:nowrap;min-width:160px">${label}</td><td style="padding:7px 14px;border-bottom:1px solid #eee;color:#1A1A1A">${value || '—'}</td></tr>`;
+
+    return {
+      subject: `🔔 New Lead In Progress: ${name} · ${brand}`,
+      html: `
+<table style="font-family:sans-serif;font-size:14px;border-collapse:collapse;width:100%;max-width:640px;margin:0 auto">
+  <tr><td colspan="2" style="padding:14px 14px 6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee;background:#fafafa">Contact Info</td></tr>
+  ${row('Name', name)}
+  ${row('Designation', role)}
+  ${row('Email', email)}
+  ${row('Mobile', mobile)}
+  ${row('Brand', brand)}
+  ${row('Website', website ? `<a href="${website}" style="color:#CC1F26">${website}</a>` : '—')}
+  <tr><td colspan="2" style="padding:14px 14px 6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee;background:#fafafa">Platform Links</td></tr>
+  <tr><td colspan="2" style="padding:10px 14px;border-bottom:1px solid #eee"><ul style="margin:0;padding-left:18px;line-height:2">${platformLinks || '<li>None provided</li>'}</ul></td></tr>
+  <tr><td colspan="2" style="padding:14px 14px 6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee;background:#fafafa">What They Sell</td></tr>
+  <tr><td colspan="2" style="padding:10px 14px;border-bottom:1px solid #eee;font-style:italic">${oneLiner}</td></tr>
+  <tr><td colspan="2" style="padding:14px 14px 6px;font-size:11px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#888;border-bottom:2px solid #eee;background:#fafafa">Revenue & Business</td></tr>
+  ${row('Monthly Offline Revenue', data.offline_revenue)}
+  ${row('Monthly Online Revenue', data.online_revenue)}
+  ${row('Ad Spend Commitment', data.ad_spend)}
+  ${row('Gross Margins', data.gross_margins)}
+  <tr><td colspan="2" style="padding:12px 14px;font-size:12px;color:#aaa;text-align:center">⚠️ This person is still filling the form — early lead capture only.</td></tr>
+</table>`,
+    };
+  }
+
+  try {
+    const { subject, html } = buildEarlyLeadEmail();
+    await resend.emails.send({
+      from: 'Zero Retainer Form <growth@oktobuzz.com>',
+      to: [notifyEmail],
+      subject,
+      html,
+    });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Early lead email error:', err);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 // ─── POST /submit ─────────────────────────────────────────────────────────────
 app.post('/submit', async (req, res) => {
   const data = req.body;

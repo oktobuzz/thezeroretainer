@@ -141,12 +141,14 @@ header {
    LAYOUT
 ====================================================== */
 main { max-width: var(--maxw); margin: 0 auto; padding: 0 var(--pad); }
+/* Intro and thanks pages keep show/hide behavior */
 .page { display: none; padding: 64px 0 120px; animation: pageIn 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
 .page.active { display: block; }
 @keyframes pageIn {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
 
 /* ======================================================
    TYPOGRAPHY
@@ -1037,7 +1039,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 
   <div class="nav-row end">
-    <button class="btn btn-primary" onclick="goTo('part1')">Start application <span class="arr">→</span></button>
+    <button class="btn btn-primary" onclick="startApplication()">Start application <span class="arr">→</span></button>
   </div>
 
   <div class="intro-footer">
@@ -1047,7 +1049,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <!-- ====================================================
-     PAGE: PART 1 — About You
+     FORM CONTAINER — all sections scroll continuously
+==================================================== -->
+<!-- ====================================================
+     PART 1 — About You
 ==================================================== -->
 <section class="page" id="page-part1">
   <div class="form-section-header">
@@ -1154,15 +1159,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="field-error" id="err-q3">This one's important. Give us one sharp line.</div>
   </div>
 
-  <div class="nav-row">
-    <button class="btn btn-ghost" onclick="goTo('intro')"><span class="arr">←</span> Back</button>
+  <div class="nav-row end">
     <button class="btn btn-primary" id="continue-part1" data-step="Step 1 – Brand URLs" onclick="validateAndNext('part1','part1b')">Continue <span class="arr">→</span></button>
   </div>
-  <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
+
 </section>
 
 <!-- ====================================================
-     PAGE: PART 2 — Name a Number
+     PART 2 — Name a Number
 ==================================================== -->
 <section class="page" id="page-part1b">
   <div class="form-section-header">
@@ -1228,14 +1232,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 
   <div class="nav-row">
-    <button class="btn btn-ghost" onclick="goTo('part1')"><span class="arr">←</span> Back</button>
+    <button class="btn btn-ghost" onclick="goTo('part1')"><span class="arr" style="transform:rotate(180deg)">→</span> Back</button>
     <button class="btn btn-primary" id="continue-part1b" data-step="Step 2 – Platform Details" onclick="validateAndNext('part1b','part2')">Continue <span class="arr">→</span></button>
   </div>
-  <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
+
 </section>
 
 <!-- ====================================================
-     PAGE: PART 3 — Platform Data Table
+     PART 3 — Platform Data Table
 ==================================================== -->
 <section class="page" id="page-part2">
   <div class="form-section-header">
@@ -1267,17 +1271,17 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
   <p class="table-scroll-hint">Swipe right to fill all the details</p>
   <div class="field-error" id="err-table-incomplete" style="text-align:center;margin-top:10px;">Please fill in all dropdowns in the table before continuing.</div>
-  <div class="field-error" id="err-platforms" style="text-align:center;margin-top:8px;">Please go back and fill in at least one platform URL in Part 1.</div>
+  <div class="field-error" id="err-platforms" style="text-align:center;margin-top:8px;">Please fill in at least one platform URL in Part 1 above.</div>
 
   <div class="nav-row">
-    <button class="btn btn-ghost" onclick="goTo('part1b')"><span class="arr">←</span> Back</button>
+    <button class="btn btn-ghost" onclick="goTo('part1b')"><span class="arr" style="transform:rotate(180deg)">→</span> Back</button>
     <button class="btn btn-primary" id="continue-part2" data-step="Step 3 – About the Brand" onclick="validateAndNext('part2','part3')">Continue <span class="arr">→</span></button>
   </div>
-  <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
+
 </section>
 
 <!-- ====================================================
-     PAGE: PART 3 — Deciding Questions
+     PART 4 — Deciding Questions
 ==================================================== -->
 <section class="page" id="page-part3">
   <div class="form-section-header">
@@ -1311,14 +1315,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 
   <div class="nav-row">
-    <button class="btn btn-ghost" onclick="goTo('part2')"><span class="arr">←</span> Back</button>
+    <button class="btn btn-ghost" onclick="goTo('part2')"><span class="arr" style="transform:rotate(180deg)">→</span> Back</button>
     <button class="btn btn-primary" id="continue-part3" data-step="Step 4 – Deciding Questions" onclick="validateAndNext('part3','part4')">Continue <span class="arr">→</span></button>
   </div>
-  <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
+
 </section>
 
 <!-- ====================================================
-     PAGE: PART 4 — Fine Print
+     PART 5 — Fine Print
 ==================================================== -->
 <section class="page" id="page-part4">
   <div class="form-section-header">
@@ -1373,13 +1377,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="field-error" id="err-q13">Leave us with one great line.</div>
   </div>
 
-  <div class="nav-row" style="flex-direction:column;align-items:stretch;gap:16px;">
-    <div style="display:flex;align-items:center;justify-content:space-between;">
-      <button class="btn btn-ghost" onclick="goTo('part3')"><span class="arr">←</span> Back</button>
-      <button class="btn btn-primary" id="btn-submit" data-step="Step 6 – Submitted" onclick="submitForm()">Submit application <span class="arr">→</span></button>
-    </div>
+  <div class="nav-row end">
+    <button class="btn btn-primary" id="btn-submit" data-step="Step 6 – Submitted" onclick="submitForm()">Submit application <span class="arr">→</span></button>
   </div>
-  <p class="page-help">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
+  <p class="page-help" style="margin-top:32px;">Stuck somewhere? Reach out at <a href="mailto:growth@oktobuzz.com">growth@oktobuzz.com</a></p>
+
 </section>
 
 <!-- ====================================================
@@ -1589,24 +1591,25 @@ var PAGE_LABELS = {
   thanks: 'Step 6 – Submitted',
 };
 
+function startApplication() {
+  goTo('part1');
+}
+
 function goTo(pageId) {
-  document.querySelectorAll('.page').forEach(function(p) {
-    p.classList.remove('active');
-  });
+  document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
   var target = document.getElementById('page-' + pageId);
   if (target) target.classList.add('active');
   currentPage = pageId;
   updateUI();
   window.scrollTo({ top: 0, behavior: 'smooth' });
-  // Build table AFTER page is shown so DOM elements exist
+  trackStep(pageId);
   if (pageId === 'part2') rebuildTable();
+}
 
-  // ── Form step tracking (GTM dataLayer + direct GA4) ─
+function trackStep(pageId) {
   var stepNumbers = { intro:0, part1:1, part1b:2, part2:3, part3:4, part4:5, thanks:6 };
   var stepNum = stepNumbers[pageId] !== undefined ? stepNumbers[pageId] : pageId;
   var stepName = PAGE_LABELS[pageId] || pageId;
-
-  // Push to dataLayer — GTM picks this up as a Custom Event trigger
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
     event:       'form_step_view',
@@ -1615,8 +1618,6 @@ function goTo(pageId) {
     form_name:   'Zero Retainer Application',
     page_path:   '/apply#' + pageId,
   });
-
-  // Direct GA4 via gtag (works independently of GTM)
   if (typeof gtag === 'function') {
     gtag('event', 'form_step_view', {
       step_number: stepNum,
@@ -1631,9 +1632,14 @@ function goTo(pageId) {
   }
 }
 
-function updateUI() {
-  var steps = { intro: 3, part1: 20, part1b: 40, part2: 60, part3: 78, part4: 92, thanks: 100 };
-  document.getElementById('progress').style.width = (steps[currentPage] || 3) + '%';
+/* ── Step-based progress bar ── */
+function updateScrollProgress() {
+  var steps = { intro: 3, part1: 20, part1b: 40, part2: 60, part3: 80, part4: 90, thanks: 100 };
+  var pct = steps[currentPage] !== undefined ? steps[currentPage] : 3;
+  document.getElementById('progress').style.width = pct + '%';
+}
+
+function updateStepLabel() {
   var labels = {
     intro:  '',
     part1:  'About You',
@@ -1645,6 +1651,17 @@ function updateUI() {
   };
   document.getElementById('step-label').textContent = labels[currentPage] || '';
 }
+
+function updateUI() {
+  updateScrollProgress();
+  updateStepLabel();
+}
+
+// Rebuild platform table when URL inputs change
+['url_amazon','url_flipkart','url_blinkit','url_zepto','url_instamart'].forEach(function(id) {
+  var el = document.getElementById(id);
+  if (el) el.addEventListener('blur', function() { rebuildTable(); });
+});
 
 /* ======================================================
    VALIDATION
@@ -1762,7 +1779,7 @@ var _origClearAllErrors = clearAllErrors;
 clearAllErrors = function() {
   _origClearAllErrors();
   document.querySelectorAll('[id^="inline-err-"]').forEach(function(el) { el.textContent = ''; });
-  document.querySelectorAll('#page-part1 input').forEach(function(el) { el.style.borderColor = ''; });
+  document.querySelectorAll('#page-part1 input, .form-section input').forEach(function(el) { el.style.borderColor = ''; });
 };
 
 function validatePart1b() {
@@ -1827,6 +1844,35 @@ function validatePart4() {
   return ok;
 }
 
+function sendEarlyLead() {
+  var data = {};
+  var fields = [
+    {id:'q1_name', name:'name'}, {id:'q1_role', name:'designation'},
+    {id:'q1_mobile', name:'mobile'}, {id:'q1_email', name:'email'},
+    {id:'q2_brand', name:'brand_name'}, {id:'q2_website', name:'url_website'},
+    {id:'url_amazon', name:'url_amazon'}, {id:'url_flipkart', name:'url_flipkart'},
+    {id:'url_blinkit', name:'url_blinkit'}, {id:'url_zepto', name:'url_zepto'},
+    {id:'url_instamart', name:'url_instamart'}, {id:'url_other', name:'url_other'},
+    {id:'q3_text', name:'one_liner'}
+  ];
+  fields.forEach(function(f) {
+    var el = document.getElementById(f.id);
+    if (el) data[f.name] = el.value;
+  });
+  ['offline_revenue','online_revenue','ad_spend','gross_margins'].forEach(function(name) {
+    var checked = document.querySelector('input[name="' + name + '"]:checked');
+    data[name] = checked ? checked.value : '';
+  });
+  var serverUrl = (window.location.protocol === 'file:')
+    ? 'http://localhost:3000/early-lead'
+    : '/early-lead';
+  fetch(serverUrl, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).catch(function(e) { console.warn('Early lead email failed (non-fatal):', e); });
+}
+
 function validateAndNext(fromPage, toPage) {
   var validators = {
     part1: validatePart1,
@@ -1837,6 +1883,7 @@ function validateAndNext(fromPage, toPage) {
   };
   var fn = validators[fromPage];
   if (fn && !fn()) return;
+  if (fromPage === 'part1b') sendEarlyLead();
   goTo(toPage);
 }
 
@@ -1858,7 +1905,7 @@ async function submitForm() {
   });
 
   // Loading state
-  var submitBtn = document.querySelector('#page-part4 .btn-primary');
+  var submitBtn = document.getElementById('btn-submit');
   var originalHTML = submitBtn.innerHTML;
   submitBtn.disabled = true;
   submitBtn.innerHTML = 'Sending… ⏳';
